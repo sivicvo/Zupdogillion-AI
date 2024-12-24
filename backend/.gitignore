@@ -27,3 +27,4 @@ ENV/
 # Other files to ignore
 *.DS_Store  # macOS specific
 Thumbs.db   # Windows specific
+.vercel
