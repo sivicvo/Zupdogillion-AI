@@ -100,7 +100,18 @@ const Header = () => {
                                 </div>
                             )}
                         </div>
-                        <button>Sign Up</button>
+                        <Link
+                            href="/auth/login"
+                            className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
+                        >
+                            Login
+                        </Link>
+                        <Link
+                            href="/auth/register"
+                            className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
+                        >
+                            Register
+                        </Link>
                     </div>
                 </div>
             </div>

@@ -3,18 +3,20 @@ from config import Config
 from routes import main, auth_bp
 from models import db
 from flask_login import LoginManager
+from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 
 
 app = Flask(__name__)
 app.config.from_object(Config)
-CORS(app)
 
 # Initialize database
 db.init_app(app)
 
 login_manager = LoginManager(app)
 login_manager.login_view = 'auth.login'
+jwt = JWTManager(app)
+CORS(app)
 
 # Register Blueprints
 app.register_blueprint(main)

@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, jsonify
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from flask_jwt_extended import create_access_token
 from models import Meme, User, db
 
 #degine the main bludprint for general app functionality
@@ -54,7 +55,6 @@ def register():
     #create a new user
     new_user = User(email=email)
     new_user.set_password(password) #assume set_password hashes the password
-    new_user.set_active(False)
     db.session.add(new_user)
     db.session.commit()
 
@@ -71,8 +71,8 @@ def login():
     if user and user.check_password(password):
         if not user.is_active:
             return jsonify({"message": "Account is inactive."}), 403
-        login_user(user)
-        return jsonify({"message": "Login successful!"}), 200
+        access_token = create_access_token(identity=user.id)
+        return jsonify(access_token=access_token), 200
     return jsonify({"message": "Invalid credentials"}), 401
 
 @auth_bp.route('/logout', methods=['POST'])
