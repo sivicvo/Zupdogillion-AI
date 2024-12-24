@@ -18,17 +18,13 @@ const Header = () => {
     const handleLogout = async () => {
         console.log("logout button clicked-----------------");
         try {
-            await axios.post(
-                "http://localhost:5328/auth/logout",
-                {},
-                {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem(
-                            "token"
-                        )}`, // Include token if needed
-                    },
-                }
-            );
+            const token = localStorage.getItem("token");
+            console.log("local storage : ", `Bearer ${token}`);
+            await axios.post("http://localhost:5328/auth/logout", {}, {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Include the token in the headers
+                },
+            });
             localStorage.removeItem("token"); // Clear token from local storage
             window.location.href = "/auth/login"; // Redirect to login page
         } catch (error) {
@@ -139,7 +135,7 @@ const Header = () => {
                                     </DropdownItem>
                                     <DropdownItem
                                         key="logout"
-                                        onSubmit={handleLogout}
+                                        onAction={handleLogout}
                                     >
                                         <Button className="block px-4 py-2 text-sm mb-0 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">
                                             Logout

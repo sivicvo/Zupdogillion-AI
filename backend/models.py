@@ -5,9 +5,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 db = SQLAlchemy()
 
 class User(db.Model):
+    __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(80), unique=True, nullable=False)
-    password_hash = db.Column(db.String(128), nullable=False)  # Ensure this field exists
+    email = db.Column(db.String(256), unique=True, nullable=False)
+    password_hash = db.Column(db.String(256), nullable=False)  # Ensure this field exists
     is_active = db.Column(db.Boolean(), unique=False, nullable=False, default=False)
 
     def set_password(self, password):

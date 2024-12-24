@@ -1,21 +1,27 @@
+"use client";
+
 import { useState } from "react";
 import axios from "axios";
-import { useRouter } from "next/router";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const ResetPasswordPage: React.FC = () => {
     const router = useRouter();
-    const { token } = router.query; // Get the token from URL
+    const searchParams = useSearchParams();
+    const token = searchParams.get("token");
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
 
     const handleResetPassword = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            await axios.post(`http://localhost:5328/auth/reset-password/${token}`, {
-                password,
-            });
+            await axios.post(
+                `http://localhost:5328/auth/reset-password/${token}`,
+                {
+                    password,
+                }
+            );
             setMessage("Password has been reset successfully!");
-            router.push("/signin"); // Redirect to sign-in page after successful reset
+            router.push("/login"); // Redirect to sign-in page after successful reset
         } catch (error) {
             setMessage("Failed to reset password.");
             console.log(error);

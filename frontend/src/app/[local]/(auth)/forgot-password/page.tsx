@@ -46,4 +46,8 @@ const ForgotPasswordPage: React.FC = () => {
     );
 };
 
+// export async function generateStaticParams() {
+//     return [];
+// }
+
 export default ForgotPasswordPage;

@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, request, jsonify
-from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from flask import Blueprint, render_template, request, jsonify, session
+from flask_login import logout_user, login_required, current_user
 import uuid
 from datetime import datetime, timedelta
 from flask_jwt_extended import create_access_token
@@ -12,11 +12,6 @@ main = Blueprint('main', __name__)
 #define the auth blueprint for authentication related routes
 auth_bp = Blueprint('auth', __name__)
 mail = Mail()
-login_manager = LoginManager()
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
 
 @main.route('/')
 def home():
@@ -34,6 +29,7 @@ def generate():
     return jsonify({"message": "Meme generated!", "text": text_input})
 
 @main.route('/api/all_memes', methods=['GET'])
+@login_required
 def all_memes():
     memes = Meme.query.all()
     return jsonify([{"owner_name": meme.owner_name, "image_url": meme.image_url, "caption": meme.caption} for meme in memes])
@@ -83,6 +79,7 @@ def login():
 @login_required
 def logout():
     logout_user()
+    session.clear()
     return jsonify({"message": "Logged out successfully!"}), 200
 
 @auth_bp.route('/protected', methods=['GET'])
