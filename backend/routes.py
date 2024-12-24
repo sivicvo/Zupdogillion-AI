@@ -1,13 +1,17 @@
 from flask import Blueprint, render_template, request, jsonify
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+import uuid
+from datetime import datetime, timedelta
 from flask_jwt_extended import create_access_token
 from models import Meme, User, db
+from flask_mail import Mail, Message
 
 #degine the main bludprint for general app functionality
 main = Blueprint('main', __name__)
 
 #define the auth blueprint for authentication related routes
 auth_bp = Blueprint('auth', __name__)
+mail = Mail()
 login_manager = LoginManager()
 
 @login_manager.user_loader
@@ -85,3 +89,41 @@ def logout():
 @login_required
 def protected():
     return jsonify({"message": f"Hello {current_user.email}!"}), 200
+
+@auth_bp.route('/forgot-password', methods=['POST'])
+def forgot_password():
+    data = request.get_json()
+    email = data['email']
+
+    user = User.query.filter_by(email=email).first()
+    if user:
+        reset_token = str(uuid.uuid4())
+        expiration_time = datetime.utcnow() + timedelta(hours=1)
+
+        user.reset_token = reset_token
+        user.token_expiration = expiration_time
+        db.session.commit()
+
+        msg = Message('Password Reset Request', sender='jackpassiondev07@gmail.com', recipients=[email])
+        msg.body = f'Click the link to reset your password: http://localhost:3000/auth/reset-password/{reset_token}'
+        mail.send(msg)
+    
+    return jsonify({"Message": "If that email is registered, you will receive a password reset link."}), 200
+
+@auth_bp.route('/reset-password/<token>', methods=['POST'])
+def reset_password(token):
+    data = request.get_json()
+    password = data['password']
+
+    user = User.query.filter_by(reset_token=token).first()
+
+    if user and user.token_expiration > datetime.utcnow():
+        user.set_password(password)
+        user.reset_token = None
+        user.token_expiration = None
+        db.session.commit()
+
+        return jsonify({"message": "Password has been updated successfully."}), 200
+    
+    return jsonify({"message": "Invalid or expired token."}), 400
+

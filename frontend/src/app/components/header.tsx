@@ -1,13 +1,41 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
-import { Moon, Sun, User, ChevronDown } from "lucide-react";
+import { Moon, Sun, User } from "lucide-react";
+import axios from "axios";
+import {
+    Button,
+    Dropdown,
+    DropdownTrigger,
+    DropdownMenu,
+    DropdownItem,
+} from "@nextui-org/react";
 
 const Header = () => {
     const { theme, setTheme } = useTheme();
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    const handleLogout = async () => {
+        console.log("logout button clicked-----------------");
+        try {
+            await axios.post(
+                "http://localhost:5328/auth/logout",
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "token"
+                        )}`, // Include token if needed
+                    },
+                }
+            );
+            localStorage.removeItem("token"); // Clear token from local storage
+            window.location.href = "/auth/login"; // Redirect to login page
+        } catch (error) {
+            console.error("Logout failed:", error);
+            alert("Logout failed. Please try again.");
+        }
+    };
 
     return (
         <header className="bg-white dark:bg-gray-800 shadow-md">
@@ -69,37 +97,6 @@ const Header = () => {
                                 <Moon size={20} />
                             )}
                         </button>
-                        <div className="relative">
-                            <button
-                                onClick={() =>
-                                    setIsDropdownOpen(!isDropdownOpen)
-                                }
-                                className="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white"
-                            >
-                                <User size={20} />
-                                <span>Account</span>
-                                <ChevronDown size={16} />
-                            </button>
-                            {isDropdownOpen && (
-                                <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-700 rounded-md shadow-lg py-1 z-10">
-                                    <Link
-                                        href="/my-memes"
-                                        className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
-                                    >
-                                        My Memes
-                                    </Link>
-                                    <Link
-                                        href="/pricing"
-                                        className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
-                                    >
-                                        Pricing
-                                    </Link>
-                                    <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">
-                                        Sign Out
-                                    </button>
-                                </div>
-                            )}
-                        </div>
                         <Link
                             href="/auth/login"
                             className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
@@ -112,6 +109,45 @@ const Header = () => {
                         >
                             Register
                         </Link>
+                        <div className="relative mb-0">
+                            <Dropdown
+                                showArrow
+                                className="bg-white rounded-md shadow-md mb-0"
+                            >
+                                <DropdownTrigger>
+                                    <User size={25} />
+                                </DropdownTrigger>
+                                <DropdownMenu
+                                    aria-label="User actions"
+                                    className="p-3"
+                                >
+                                    <DropdownItem key="my-memes">
+                                        <Link
+                                            href="/my-memes"
+                                            className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
+                                        >
+                                            My Memes
+                                        </Link>
+                                    </DropdownItem>
+                                    <DropdownItem key="pricing">
+                                        <Link
+                                            href="/pricing"
+                                            className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
+                                        >
+                                            Pricing
+                                        </Link>
+                                    </DropdownItem>
+                                    <DropdownItem
+                                        key="logout"
+                                        onSubmit={handleLogout}
+                                    >
+                                        <Button className="block px-4 py-2 text-sm mb-0 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">
+                                            Logout
+                                        </Button>
+                                    </DropdownItem>
+                                </DropdownMenu>
+                            </Dropdown>
+                        </div>
                     </div>
                 </div>
             </div>

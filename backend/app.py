@@ -5,6 +5,7 @@ from models import db
 from flask_login import LoginManager
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
+from flask_mail import Mail
 
 
 app = Flask(__name__)
@@ -16,6 +17,12 @@ db.init_app(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'auth.login'
 jwt = JWTManager(app)
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USERNAME'] = "jackpassiondev07@gmail.com"
+app.config['MAIL_PASSWORD'] = "aifgldgkfthj1"
+mail = Mail(app)
 CORS(app)
 
 # Register Blueprints

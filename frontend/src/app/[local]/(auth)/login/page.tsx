@@ -30,8 +30,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import { loginUser } from "@/services/authService";
+import Link from "next/link";
 
 const LoginPage: React.FC = () => {
     const [email, setEmail] = useState("");
@@ -44,7 +45,7 @@ const LoginPage: React.FC = () => {
             const data = await loginUser(email, password);
             localStorage.setItem("token", data.access_token);
             alert("Login successful!");
-            router.push('/')
+            router.push("/");
         } catch (error) {
             alert("Login failed!");
             console.log(error);
@@ -70,6 +71,12 @@ const LoginPage: React.FC = () => {
                 required
                 className="border border-gray-300 rounded-md p-2 w-full"
             />
+            <Link
+                href="/auth/forgot-password"
+                className="px-4 py-2 text-sm text-gray-700 underline dark:text-gray-200"
+            >
+                Forgot Password
+            </Link>
             <button
                 type="submit"
                 className="bg-blue-500 text-white rounded-md p-2 w-full hover:bg-blue-600 transition"
