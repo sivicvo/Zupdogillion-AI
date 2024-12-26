@@ -31,6 +31,7 @@ app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = "jackpassiondev07@gmail.com"
 app.config['MAIL_PASSWORD'] = "aifgldgkfthj1"
 mail = Mail(app)
+
 CORS(app)
 
 # Register Blueprints
@@ -40,4 +41,4 @@ app.register_blueprint(auth_bp, url_prefix='/auth')
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()  # Create database tables if they don't exist
-    app.run(port=5328)
+    app.run(port=5328, debug=True)
