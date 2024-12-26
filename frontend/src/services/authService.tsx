@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const API_URL = "http://localhost:5328";
-const API_URL = "https://ai-meme-generator-backend.vercel.app";
+const API_URL = "http://localhost:5328";
+// const API_URL = "https://ai-meme-generator-backend.vercel.app";
 
 export interface RegisterResponse {
     message: string;
