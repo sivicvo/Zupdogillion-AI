@@ -43,6 +43,7 @@ const LoginPage: React.FC = () => {
         e.preventDefault();
         try {
             const data = await loginUser(email, password);
+            console.log("login data: ", data);
             localStorage.setItem("token", data.access_token);
             alert("Login successful!");
             router.push("/");
