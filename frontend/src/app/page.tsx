@@ -1,148 +1,182 @@
 import Image from "next/image";
 import Link from "next/link";
+import Header from "../lib/components/layout/header";
+import Footer from "../lib/components/layout/footer";
+import BannerGif from "../shared/assets/JB4o.gif";
+import axios from "axios";
+import TutorialCard from "@/lib/components/TutorialCard/TutorialCard";
+import TutorialImg from "../shared/assets/tutorial.jpg";
 
-export default function Home() {
+interface Meme {
+    url: string;
+    id: string;
+    name: string;
+    width: number;
+    height: number;
+    box_count: number;
+    caption: string;
+}
+
+const tutorials = [
+    {
+        id: 1,
+        title: "Lorem ipsum dolor sit amet",
+        description: "consectetur. Mi pretium augue ut sagittis.",
+        imageUrl: TutorialImg,
+    },
+    {
+        id: 2,
+        title: "Lorem ipsum dolor sit amet",
+        description: "consectetur. Mi pretium augue ut sagittis.",
+        imageUrl: TutorialImg,
+    },
+    {
+        id: 3,
+        title: "Lorem ipsum dolor sit amet",
+        description: "consectetur. Mi pretium augue ut sagittis.",
+        imageUrl: TutorialImg,
+    },
+    {
+        id: 4,
+        title: "Lorem ipsum dolor sit amet",
+        description: "consectetur. Mi pretium augue ut sagittis.",
+        imageUrl: TutorialImg,
+    },
+    {
+        id: 5,
+        title: "Lorem ipsum dolor sit amet",
+        description: "consectetur. Mi pretium augue ut sagittis.",
+        imageUrl: TutorialImg,
+    },
+    {
+        id: 6,
+        title: "Lorem ipsum dolor sit amet",
+        description: "consectetur. Mi pretium augue ut sagittis.",
+        imageUrl: TutorialImg,
+    },
+];
+
+export default async function Home() {
+    const memes_data = await axios.get("https://api.imgflip.com/get_memes");
+    // console.log("memes data from imgflip -> ", memes_data.data.data);
+    const memes: Meme[] = memes_data.data.data.memes;
+
     return (
-        <div className="container mx-auto px-4 py-8">
-            <section className="flex flex-col md:flex-row items-center justify-between mb-16">
-                <div className="md:w-1/2 mb-8 md:mb-0">
-                    <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gray-800 dark:text-white">
-                        Unleash Your Creativity with AI-Powered Memes!
-                    </h1>
-                    <p className="text-xl mb-6 text-gray-600 dark:text-gray-300">
-                        Transform Your Thoughts into Hilarious Memes in Seconds!
-                    </p>
-                    <Link
-                        href="/generate"
-                        className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg text-lg transition duration-300"
-                    >
-                        Start Now
-                    </Link>
-                </div>
-                <div className="md:w-1/2">
-                    <Image
-                        src="wolf.svg"
-                        alt="AI Meme Generator"
-                        width={800}
-                        height={400}
-                        className="rounded-lg shadow-lg"
-                    />
-                </div>
-            </section>
-
-            <section className="mb-16">
-                <h2 className="text-3xl font-bold mb-6 text-gray-800 dark:text-white">
-                    Latest and Popular Memes
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {[1, 2, 3].map((i) => (
-                        <div
-                            key={i}
-                            className="bg-white dark:bg-gray-700 rounded-lg shadow-md p-4"
+        <div className="bg-[#090e14]">
+            <Header />
+            <div className="container mx-auto px-4 py-8">
+                <section className="flex flex-col md:flex-row items-center justify-between my-16 gap-60">
+                    <div className="md:w-1/2 mb-8 md:mb-0 gap-8">
+                        <h2 className="text-5xl mb-6 text-blue-500 font-bold dark:text-gray-300">
+                            Wellcome to Zupdogillion
+                        </h2>
+                        <h1 className="text-7xl md:text-7xl font-bold mb-4 text-gray-100 dark:text-white">
+                            Turn text into memes with AI
+                        </h1>
+                        <h1 className="text-lg md:text-lg font-bold mb-4 text-gray-100 dark:text-white">
+                            Turn text into memes with AITurn text into memes
+                            with AITurn text into memes with AITurn text into
+                            memes with AI
+                        </h1>
+                        <Link
+                            href="/generate"
+                            className="bg-blue-500 px-16 hover:bg-blue-600 text-white font-bold py-3 mt-5 rounded-lg text-lg transition duration-300"
                         >
-                            <Image
-                                src={"wolf.svg"}
-                                alt={`Meme ${i}`}
-                                width={300}
-                                height={200}
-                                className="w-full h-48 object-cover rounded-md mb-4"
+                            Start
+                        </Link>
+                    </div>
+                    <div className="md:w-1/2">
+                        <Image
+                            src={BannerGif}
+                            alt="AI Meme Generator"
+                            width={800}
+                            height={600}
+                            className="rounded-lg shadow-lg"
+                            unoptimized={true}
+                        />
+                    </div>
+                </section>
+
+                <section className="mb-16 pt-16">
+                    <h2 className="text-6xl font-bold mb-6 text-gray-100 dark:text-white">
+                        <span className="text-blue-600"> Publish </span> and
+                        <span className="text-blue-600"> Look </span>other{" "}
+                        <div>memes from users</div>
+                    </h2>
+                    <Link
+                        href="/all-memes"
+                        className="bg-blue-500 px-16 hover:bg-blue-600 text-white font-bold py-3 mt-5 rounded-lg text-lg transition duration-300"
+                    >
+                        View All Memes
+                    </Link>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-6">
+                        {memes.slice(0, 10).map((meme, index) => {
+                            return (
+                                <Image
+                                    key={index}
+                                    src={meme.url}
+                                    alt="AI memes"
+                                    width={400}
+                                    height={400}
+                                    unoptimized={true}
+                                    layout="fixed"
+                                />
+                            );
+                        })}
+                    </div>
+                </section>
+
+                <section className="mb-16">
+                    <h2 className="text-6xl font-bold mb-6 text-gray-100 dark:text-white text-center">
+                        Zupdogillion.ai Tutorial
+                    </h2>
+                    <p className="text-center pb-10 text-gray-300">
+                        Why should you use Zupdogillion.ai to generate memes
+                        over other popular tools?
+                    </p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {tutorials.map((item, index) => (
+                            <TutorialCard
+                                key={index}
+                                id={item.id}
+                                description={item.description}
+                                title={item.title}
+                                imageUrl={item.imageUrl}
                             />
-                            <h3 className="text-lg font-semibold mb-2 text-gray-800 dark:text-white">
-                                Meme Title {i}
+                        ))}
+                    </div>
+                </section>
+
+                {/* <section>
+                    <h2 className="text-3xl font-bold mb-6 text-gray-800 dark:text-white text-center">
+                        Frequently Asked Questions
+                    </h2>
+                    <div className="space-y-4">
+                        <div className="bg-white dark:bg-gray-700 rounded-lg shadow-md p-6">
+                            <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">
+                                How does the AI meme generator work?
                             </h3>
                             <p className="text-gray-600 dark:text-gray-300">
-                                Lorem ipsum dolor sit amet, consectetur
-                                adipiscing elit.
+                                Our AI analyzes your input and matches it with
+                                suitable templates and images to create
+                                hilarious memes tailored to your ideas.
                             </p>
                         </div>
-                    ))}
-                </div>
-            </section>
-
-            <section className="mb-16">
-                <h2 className="text-3xl font-bold mb-6 text-gray-800 dark:text-white">
-                    Why Our Project
-                </h2>
-                <p className="text-lg mb-4 text-gray-600 dark:text-gray-300">
-                    In digital age, memes have become a universal language of
-                    humor and social commentary. Our AI-powered meme generator
-                    democratizes creativity, allowing anyone to express
-                    themselves through this popular medium.
-                </p>
-                <p className="text-lg text-gray-600 dark:text-gray-300">
-                    We created this platform with a vision to foster community
-                    engagement and spread laughter across the internet. By
-                    simplifying the meme creation process, empowering users to
-                    share their unique perspectives and join the global
-                    conversation.
-                </p>
-            </section>
-
-            <section className="mb-16">
-                <h2 className="text-3xl font-bold mb-6 text-gray-800 dark:text-white">
-                    Meme Creation Tutorials
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div className="bg-white dark:bg-gray-700 rounded-lg shadow-md p-6">
-                        <h3 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">
-                            Basic Meme Formats
-                        </h3>
-                        <p className="text-gray-600 dark:text-gray-300 mb-4">
-                            Learn about popular meme structures and how to use
-                            them effectively.
-                        </p>
-                        <Link
-                            href="#"
-                            className="text-blue-500 hover:underline"
-                        >
-                            Watch Tutorial
-                        </Link>
+                        <div className="bg-white dark:bg-gray-700 rounded-lg shadow-md p-6">
+                            <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">
+                                Can I use the generated memes commercially?
+                            </h3>
+                            <p className="text-gray-600 dark:text-gray-300">
+                                The memes generated are for personal use. For
+                                commercial use, please check our licensing
+                                options in the pricing section.
+                            </p>
+                        </div>
                     </div>
-                    <div className="bg-white dark:bg-gray-700 rounded-lg shadow-md p-6">
-                        <h3 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">
-                            Crafting Engaging Captions
-                        </h3>
-                        <p className="text-gray-600 dark:text-gray-300 mb-4">
-                            Discover techniques for writing captions that make
-                            your memes stand out.
-                        </p>
-                        <Link
-                            href="#"
-                            className="text-blue-500 hover:underline"
-                        >
-                            Read Guide
-                        </Link>
-                    </div>
-                </div>
-            </section>
-
-            <section>
-                <h2 className="text-3xl font-bold mb-6 text-gray-800 dark:text-white">
-                    Frequently Asked Questions
-                </h2>
-                <div className="space-y-4">
-                    <div className="bg-white dark:bg-gray-700 rounded-lg shadow-md p-6">
-                        <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">
-                            How does the AI meme generator work?
-                        </h3>
-                        <p className="text-gray-600 dark:text-gray-300">
-                            Our AI analyzes your input and matches it with
-                            suitable templates and images to create hilarious
-                            memes tailored to your ideas.
-                        </p>
-                    </div>
-                    <div className="bg-white dark:bg-gray-700 rounded-lg shadow-md p-6">
-                        <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">
-                            Can I use the generated memes commercially?
-                        </h3>
-                        <p className="text-gray-600 dark:text-gray-300">
-                            The memes generated are for personal use. For
-                            commercial use, please check our licensing options
-                            in the pricing section.
-                        </p>
-                    </div>
-                </div>
-            </section>
+                </section> */}
+            </div>
+            <Footer />
         </div>
     );
 }
