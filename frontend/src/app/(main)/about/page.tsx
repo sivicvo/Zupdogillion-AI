@@ -4,7 +4,7 @@ import Header from "@/lib/components/layout/header";
 
 export default function About() {
     return (
-        <div className="bg-[#090e14]">
+        <>
             <Header />
             <div className="container mx-auto px-4 py-8">
                 <h1 className="text-3xl font-bold mb-8 text-center text-gray-100 dark:text-white">
@@ -133,6 +133,6 @@ export default function About() {
                 </div>
             </div>
             <Footer />
-        </div>
+        </>
     );
 }

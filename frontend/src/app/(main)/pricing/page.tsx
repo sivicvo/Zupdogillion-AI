@@ -36,7 +36,7 @@ const plans = [
 
 export default function Pricing() {
     return (
-        <div className="bg-[#090e14]">
+        <>
             <Header />
             <div className="container mx-auto px-4 py-8">
                 <h1 className="text-3xl font-bold mb-8 text-center text-gray-800 dark:text-white">
@@ -175,6 +175,6 @@ export default function Pricing() {
                 </div>
             </div>
             <Footer />
-        </div>
+        </>
     );
 }

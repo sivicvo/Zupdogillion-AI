@@ -51,7 +51,7 @@ const AllMemes = () => {
 
     if (loading) {
         return (
-            <div className="bg-[#090e14]">
+            <>
                 <Header />
                 <div className="flex items-center justify-center h-screen">
                     <p className="text-xl text-gray-100 dark:text-white">
@@ -59,12 +59,12 @@ const AllMemes = () => {
                     </p>
                 </div>
                 <Footer />
-            </div>
+            </>
         );
     }
 
     return (
-        <div className="bg-[#090e14]">
+        <>
             <Header />
             <div className="container mx-auto px-4 py-8">
                 <h1 className="text-6xl font-bold mb-4 text-gray-100 dark:text-white">
@@ -134,7 +134,7 @@ const AllMemes = () => {
                 )}
             </div>
             <Footer />
-        </div>
+        </>
     );
 };
 
