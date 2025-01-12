@@ -1,9 +1,11 @@
 import Image from "next/image";
-import MainLayout from "../layout";
+import Footer from "@/lib/components/layout/footer";
+import Header from "@/lib/components/layout/header";
 
 export default function About() {
     return (
-        <MainLayout showHeaderFooter={true}>
+        <>
+            <Header />
             <div className="container mx-auto px-4 py-8">
                 <h1 className="text-3xl font-bold mb-8 text-center text-gray-100 dark:text-white">
                     About AI Meme Generator
@@ -130,6 +132,7 @@ export default function About() {
                     </div>
                 </div>
             </div>
-        </MainLayout>
+            <Footer />
+        </>
     );
 }
