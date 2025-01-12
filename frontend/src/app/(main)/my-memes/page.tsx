@@ -26,10 +26,6 @@ export default function MyMemes() {
                     throw new Error("Failed to fetch memes!");
                 }
                 const data = await res.json();
-                console.log(
-                    "memes from backend ------------>",
-                    data.memes
-                );
                 setMemes(data.memes);
             } catch (error) {
                 console.error(error);

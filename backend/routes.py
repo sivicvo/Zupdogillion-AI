@@ -6,6 +6,10 @@ from flask_jwt_extended import create_access_token, create_refresh_token
 from models import Meme, User, db
 from flask_mail import Mail, Message
 import requests
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 #degine the main bludprint for general app functionality
 main = Blueprint('main', __name__)
@@ -23,25 +27,29 @@ def home():
 @main.route('/api/generate', methods=['POST'])
 def generate():
     data = request.get_json()
-    text_input = data.get('text_input')
-
-    username = "bitbanana"
-    password = "bitbanana717@gmail.com"
-    template_id = '12345678'
-    payload = {
-        'template_id': template_id,
-        'username': username,
-        'password': password,
+    prompt = data.get('prompt')
+    stability_api_url = "https://api.stability.ai/v2beta/stable-image/generate/ultra"
+    stability_api_key = os.getenv('STABILITY_API_KEY')
+    stability_payload = {
+        "prompt": prompt,
     }
-    
-    # Example response after meme generation (replace with actual logic)
-    return jsonify({"message": "Meme generated!", "text": text_input})
+    headers = {
+        "Authorization": f"Bearer {stability_api_key}",
+        "Content-Type": 'multipart/form-data; boundary="----WebKitFormBoundary7MA4YWxkTrZu0gW"',
+        "accept": "image/*"
+    }
+    # try:
+    #     stability_response = requests.post(stability_api_url, json=stability_payload, headers=headers)
+    #     stability_response.raise_for_status()
+    #     generated_image_url = 
 
 @main.route('/api/all_memes', methods=['GET'])
 def all_memes():
     responses = requests.get('https://api.imgflip.com/get_memes')
     memes_data = responses.json()
     return jsonify(memes_data)
+
+
 
 # @main.route('/pricing')
 # def pricing():

@@ -5,15 +5,15 @@ export default function About() {
     return (
         <MainLayout showHeaderFooter={true}>
             <div className="container mx-auto px-4 py-8">
-                <h1 className="text-3xl font-bold mb-8 text-center text-gray-800 dark:text-white">
+                <h1 className="text-3xl font-bold mb-8 text-center text-gray-100 dark:text-white">
                     About AI Meme Generator
                 </h1>
 
                 <div className="mb-12">
-                    <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">
+                    <h2 className="text-2xl font-semibold mb-4 text-gray-100 dark:text-white">
                         Our Mission
                     </h2>
-                    <p className="text-gray-600 dark:text-gray-300 mb-4">
+                    <p className="text-gray-200 dark:text-gray-300 mb-4">
                         At AI Meme Generator, our mission is to democratize
                         creativity and bring laughter to the world through the
                         power of artificial intelligence. We believe that
@@ -21,7 +21,7 @@ export default function About() {
                         engaging content, and our platform is designed to make
                         that process as easy and fun as possible.
                     </p>
-                    <p className="text-gray-600 dark:text-gray-300">
+                    <p className="text-gray-200 dark:text-gray-300">
                         By combining cutting-edge AI technology with a
                         user-friendly interface, empowering people from all
                         walks of life to express themselves through memes,
@@ -31,7 +31,7 @@ export default function About() {
                 </div>
 
                 <div className="mb-12">
-                    <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">
+                    <h2 className="text-2xl font-semibold mb-4 text-gray-100 dark:text-white">
                         Our Team
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -60,10 +60,10 @@ export default function About() {
                                     height={200}
                                     className="rounded-full mx-auto mb-4"
                                 />
-                                <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">
+                                <h3 className="text-xl font-semibold mb-2 text-gray-100 dark:text-white">
                                     {member.name}
                                 </h3>
-                                <p className="text-gray-600 dark:text-gray-300">
+                                <p className="text-gray-200 dark:text-gray-300">
                                     {member.role}
                                 </p>
                             </div>
@@ -72,17 +72,17 @@ export default function About() {
                 </div>
 
                 <div className="mb-12">
-                    <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">
+                    <h2 className="text-2xl font-semibold mb-4 text-gray-100 dark:text-white">
                         Our Journey
                     </h2>
-                    <p className="text-gray-600 dark:text-gray-300 mb-4">
+                    <p className="text-gray-200 dark:text-gray-300 mb-4">
                         Founded in 2023, AI Meme Generator started as a passion
                         project among a group of friends who loved memes and
                         were fascinated by the potential of AI. What began as a
                         simple idea quickly grew into a platform used by
                         thousands of creators worldwide.
                     </p>
-                    <p className="text-gray-600 dark:text-gray-300">
+                    <p className="text-gray-200 dark:text-gray-300">
                         Todayre constantly innovating and improving our
                         technology to bring you the best meme generation
                         experience possible. Our journey is just beginning, and
@@ -92,7 +92,7 @@ export default function About() {
                 </div>
 
                 <div>
-                    <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">
+                    <h2 className="text-2xl font-semibold mb-4 text-gray-100 dark:text-white">
                         Our Sponsors
                     </h2>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -122,7 +122,7 @@ export default function About() {
                                     height={150}
                                     className="mx-auto mb-2"
                                 />
-                                <p className="text-gray-600 dark:text-gray-300">
+                                <p className="text-gray-200 dark:text-gray-300">
                                     {sponsor.name}
                                 </p>
                             </div>
