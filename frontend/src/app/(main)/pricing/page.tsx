@@ -1,5 +1,6 @@
+import Footer from "@/lib/components/layout/footer";
+import Header from "@/lib/components/layout/header";
 import { Check } from "lucide-react";
-import MainLayout from "../layout";
 
 const plans = [
     {
@@ -35,7 +36,8 @@ const plans = [
 
 export default function Pricing() {
     return (
-        <MainLayout showHeaderFooter={true}>
+        <div className="bg-[#090e14]">
+            <Header />
             <div className="container mx-auto px-4 py-8">
                 <h1 className="text-3xl font-bold mb-8 text-center text-gray-800 dark:text-white">
                     Choose Your Plan
@@ -172,6 +174,7 @@ export default function Pricing() {
                     </div>
                 </div>
             </div>
-        </MainLayout>
+            <Footer />
+        </div>
     );
 }

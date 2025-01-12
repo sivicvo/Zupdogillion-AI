@@ -2,9 +2,10 @@
 
 import Image from "next/image";
 import { ThumbsUp, Share2, MoreHorizontal } from "lucide-react";
-import MainLayout from "../layout";
 import { Button } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
+import Header from "@/lib/components/layout/header";
+import Footer from "@/lib/components/layout/footer";
 
 interface Meme {
     id: string;
@@ -50,18 +51,21 @@ const AllMemes = () => {
 
     if (loading) {
         return (
-            <MainLayout showHeaderFooter={true}>
+            <div className="bg-[#090e14]">
+                <Header />
                 <div className="flex items-center justify-center h-screen">
                     <p className="text-xl text-gray-100 dark:text-white">
                         Loading memes...
                     </p>
                 </div>
-            </MainLayout>
+                <Footer />
+            </div>
         );
     }
 
     return (
-        <MainLayout showHeaderFooter={true}>
+        <div className="bg-[#090e14]">
+            <Header />
             <div className="container mx-auto px-4 py-8">
                 <h1 className="text-6xl font-bold mb-4 text-gray-100 dark:text-white">
                     All Memes
@@ -129,7 +133,8 @@ const AllMemes = () => {
                     </div>
                 )}
             </div>
-        </MainLayout>
+            <Footer />
+        </div>
     );
 };
 
