@@ -12,18 +12,24 @@ import {
     DropdownItem,
 } from "@nextui-org/react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Header = () => {
     const { theme, setTheme } = useTheme();
     const [isLogged, setIsLogged] = useState("false");
+    const token = localStorage.getItem("token");
+
+    useEffect(() => {
+        setIsLogged("true");
+    }, [token]);
 
     const handleLogout = async () => {
         try {
             const token = localStorage.getItem("token");
+            console.log("token");
             console.log("local storage : ", `Bearer ${token}`);
             await axios.post(
-                "http://localhost:5328/auth/logout",
+                "https://zupdogollion-ai-backend.vercel.app/auth/logout",
                 {},
                 {
                     headers: {

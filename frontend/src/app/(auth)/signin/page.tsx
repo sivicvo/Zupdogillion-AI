@@ -7,7 +7,6 @@ import { Button, Input, Link, Divider } from "@nextui-org/react";
 import { Icon } from "@iconify/react";
 
 import PrimaryButton from "@/lib/components/Button/PrimaryButton";
-import { DivideCircleIcon } from "lucide-react";
 
 export default function Component() {
     const { data: session } = useSession();
@@ -107,7 +106,7 @@ export default function Component() {
                             onClick={() => {
                                 signIn("google", {
                                     callbackUrl:
-                                        "http://localhost:3000/explore",
+                                        "https://zupdogollion-ai-backend.vercel.app/explore",
                                 });
                             }}
                         >
