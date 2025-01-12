@@ -26,7 +26,7 @@ const Header = () => {
     const handleLogout = async () => {
         try {
             const token = localStorage.getItem("token");
-            console.log("token");
+            console.log("token", token);
             console.log("local storage : ", `Bearer ${token}`);
             await axios.post(
                 "https://zupdogollion-ai-backend.vercel.app/auth/logout",
