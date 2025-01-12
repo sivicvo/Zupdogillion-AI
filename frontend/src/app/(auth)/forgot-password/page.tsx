@@ -12,9 +12,12 @@ const ForgotPasswordPage: React.FC = () => {
     ) => {
         e.preventDefault();
         try {
-            await axios.post("http://localhost:5328/auth/forgot-password", {
-                email,
-            });
+            await axios.post(
+                "https://zupdogollion-ai-backend.vercel.app/auth/forgot-password",
+                {
+                    email,
+                }
+            );
             setMessage("Reset password link sent! Please check your email.");
         } catch (error) {
             setMessage("Failed to send reset link.");

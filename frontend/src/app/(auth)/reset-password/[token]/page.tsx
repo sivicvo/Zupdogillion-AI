@@ -15,7 +15,7 @@ const ResetPasswordPage: React.FC = () => {
         e.preventDefault();
         try {
             await axios.post(
-                `http://localhost:5328/auth/reset-password/${token}`,
+                `https://zupdogollion-ai-backend.vercel.app/auth/reset-password/${token}`,
                 {
                     password,
                 }

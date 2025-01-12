@@ -21,7 +21,9 @@ export default function MyMemes() {
         const fetchMemes = async () => {
             setLoading(true);
             try {
-                const res = await fetch("http://127.0.0.1:5328/api/all_memes");
+                const res = await fetch(
+                    "https://zupdogollion-ai-backend.vercel.app/api/all_memes"
+                );
                 if (!res.ok) {
                     throw new Error("Failed to fetch memes!");
                 }

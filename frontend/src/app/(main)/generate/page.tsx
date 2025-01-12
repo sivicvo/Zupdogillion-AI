@@ -1,63 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
-import {
-    Send,
-    Home,
-    // Image,
-    DollarSign,
-    Grid,
-    User,
-    HelpCircle,
-    FileText,
-} from "lucide-react";
 import Sidebar from "@/lib/components/Sidebar";
 
 export default function Generate() {
     const [prompt, setPrompt] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-    // Simulated current user's refresh token (replace this with actual logic)
-
-    const currentUserRefreshToken = "your_current_user_refresh_token"; // Replace with actual logic
-
-    useEffect(() => {
-        const localStorageToken = localStorage.getItem("token");
-        console.log("localstorage token : ------------> ", localStorageToken);
-
-        // Check if local storage token exists and matches current user's refresh token
-        if (
-            localStorageToken &&
-            localStorageToken === currentUserRefreshToken
-        ) {
-            setIsAuthenticated(true);
-        } else {
-            setIsAuthenticated(false);
-        }
-    }, []);
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setIsLoading(true);
-        try {
-            const response = await fetch("http://localhost:5328/api/generate", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ text_input: prompt }),
-            });
-            const data = await response.json();
-            console.log(data);
-            // Handle generated meme (if needed)
-        } catch (error) {
-            console.error("Error generating meme:", error);
-            // Handle error (if needed)
-        }
-        setIsLoading(false);
-    };
 
     const handleGenerate = async () => {
         try {
