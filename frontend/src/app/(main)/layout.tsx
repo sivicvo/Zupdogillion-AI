@@ -4,13 +4,13 @@ import Footer from "../../lib/components/layout/footer";
 
 interface MainLayoutProps {
     children: React.ReactNode;
-    showHeaderFooter?: boolean; // Optional prop to control header/footer visibility
+    showHeaderFooter?: boolean;
 }
 
-const MainLayout: React.FC<MainLayoutProps> = ({
+const MainLayout = ({
     children,
     showHeaderFooter = false,
-}) => {
+}: MainLayoutProps) => {
     return (
         <div className="bg-[#090e14]">
             {showHeaderFooter && <Header />}
