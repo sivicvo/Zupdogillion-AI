@@ -15,7 +15,7 @@ import {
 import Sidebar from "@/lib/components/Sidebar";
 
 export default function Generate() {
-    const [memeText, setMemeText] = useState("");
+    const [prompt, setPrompt] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -47,7 +47,7 @@ export default function Generate() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ text_input: memeText }),
+                body: JSON.stringify({ text_input: prompt }),
             });
             const data = await response.json();
             console.log(data);
@@ -78,7 +78,7 @@ export default function Generate() {
             console.error("Error generating meme: ", error);
         }
 
-        console.log("Generating meme with text:", memeText);
+        console.log("Generating meme with text:", prompt);
     };
 
     return (
@@ -89,22 +89,19 @@ export default function Generate() {
                     {/* Main Content Area */}
                     <div className="flex-1 flex items-center justify-center">
                         <div className="border-2 border-dashed border-gray-700 rounded-lg w-full aspect-video flex items-center justify-center relative">
-                            {!memeText && (
-                                <div className="flex flex-col items-center text-gray-300">
-                                    <span className="text-xl mb-4">
-                                        You didn&apos;t create any meme
-                                    </span>
-                                </div>
-                            )}
+                            <div className="flex flex-col items-center text-gray-300">
+                                <span className="text-xl mb-4">
+                                    You didn&apos;t create any meme
+                                </span>
+                            </div>
                         </div>
                     </div>
 
-                    {/* Input Area */}
                     <div className="mt-6 flex gap-2">
                         <input
                             type="text"
-                            value={memeText}
-                            onChange={(e) => setMemeText(e.target.value)}
+                            value={prompt}
+                            onChange={(e) => setPrompt(e.target.value)}
                             placeholder="Write what ever you want for your meme..."
                             className="flex-1 bg-[#2a2d31] text-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
