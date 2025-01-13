@@ -26,7 +26,8 @@ def home():
 
 @main.route('/api/generate', methods=['POST'])
 def generate():
-    data = request.get_json()
+    # data = request.get_json()
+    return jsonify(True)
 
 @main.route('/api/all_memes', methods=['GET'])
 def all_memes():
