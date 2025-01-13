@@ -20,9 +20,10 @@ mail = Mail()
 
 @main.route('/')
 def home():
-    latest_memes = Meme.query.order_by(Meme.id.desc()).limit(5).all()
-    popular_memes = Meme.query.order_by(Meme.id.desc()).limit(5).all()  # Replace with actual popularity logic
-    return render_template('home.html', latest=latest_memes, popular=popular_memes)
+    # latest_memes = Meme.query.order_by(Meme.id.desc()).limit(5).all()
+    # popular_memes = Meme.query.order_by(Meme.id.desc()).limit(5).all()  # Replace with actual popularity logic
+    # return render_template('home.html', latest=latest_memes, popular=popular_memes)
+    return "Hello, backend!"
 
 @main.route('/api/generate', methods=['POST'])
 def generate():
