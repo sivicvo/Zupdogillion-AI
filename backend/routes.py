@@ -27,21 +27,6 @@ def home():
 @main.route('/api/generate', methods=['POST'])
 def generate():
     data = request.get_json()
-    prompt = data.get('prompt')
-    stability_api_url = "https://api.stability.ai/v2beta/stable-image/generate/ultra"
-    stability_api_key = os.getenv('STABILITY_API_KEY')
-    stability_payload = {
-        "prompt": prompt,
-    }
-    headers = {
-        "Authorization": f"Bearer {stability_api_key}",
-        "Content-Type": 'multipart/form-data; boundary="----WebKitFormBoundary7MA4YWxkTrZu0gW"',
-        "accept": "image/*"
-    }
-    # try:
-    #     stability_response = requests.post(stability_api_url, json=stability_payload, headers=headers)
-    #     stability_response.raise_for_status()
-    #     generated_image_url = 
 
 @main.route('/api/all_memes', methods=['GET'])
 def all_memes():
