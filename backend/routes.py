@@ -36,6 +36,9 @@ def all_memes():
     memes_data = responses.json()
     return jsonify(memes_data)
 
+@main.route('/api/save_memes', methods=['POST'])
+def save_memes():
+    return 'You saved meme'
 
 
 # @main.route('/pricing')
