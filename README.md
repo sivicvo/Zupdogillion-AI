@@ -1,6 +1,3 @@
-Here’s a professional README template for your project "Zupdogollion AI," incorporating the use of Imgflip API, Stability AI API, Next.js, and Flask. This README will provide a comprehensive overview of your project, installation instructions, usage, and more.
-
-```markdown
 # Zupdogollion AI
 
 **Date:** Tuesday, January 14, 2025, 3 AM JST
@@ -104,10 +101,6 @@ Contributions are welcome! Please follow these steps:
 4. Push to the branch (`git push origin feature/YourFeature`).
 5. Open a Pull Request.
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ## Acknowledgments
 
 - Thanks to Imgflip and Stability AI for their APIs that power our meme generation and image generation features.
@@ -115,5 +108,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-For any questions or feedback, feel free to reach out via [your email] or open an issue in this repository.
-```
+For any questions or feedback, feel free to reach out via [bitbanana717@gmail.com] or open an issue in this repository.
