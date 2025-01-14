@@ -12,7 +12,7 @@ import { Button } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import Header from "@/lib/components/layout/header";
 import Footer from "@/lib/components/layout/footer";
-import MemeModal from "@/lib/components/modal/Modal";
+import MemeModal from "@/lib/components/modal/Modal"; // Ensure this path is correct
 import "./index.css";
 
 interface Meme {
@@ -28,9 +28,6 @@ const AllMemes: React.FC = () => {
     const [memes, setMemes] = useState<Meme[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [visibleCount, setVisibleCount] = useState<number>(12);
-    const [selectedMeme, setSelectedMeme] = useState<Meme | undefined>(
-        undefined
-    );
 
     useEffect(() => {
         const fetchMemes = async () => {
@@ -55,14 +52,6 @@ const AllMemes: React.FC = () => {
 
     const handleLoadMore = () => {
         setVisibleCount((prevCount) => prevCount + 12);
-    };
-
-    const openModal = (meme: Meme) => {
-        setSelectedMeme(meme);
-    };
-
-    const closeModal = () => {
-        setSelectedMeme(undefined);
     };
 
     if (loading) {
@@ -105,11 +94,7 @@ const AllMemes: React.FC = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     {memes.slice(0, visibleCount).map((meme) => (
-                        <MemeCard
-                            key={meme.id}
-                            meme={meme}
-                            openModal={openModal}
-                        />
+                        <MemeCard key={meme.id} meme={meme} />
                     ))}
                 </div>
 
@@ -117,14 +102,6 @@ const AllMemes: React.FC = () => {
                     <div className="flex items-center justify-center mt-6 text-blue-400">
                         <Button onClick={handleLoadMore}>Load More</Button>
                     </div>
-                )}
-
-                {selectedMeme && (
-                    <MemeModal
-                        isOpen={!!selectedMeme}
-                        onClose={closeModal}
-                        meme={selectedMeme}
-                    />
                 )}
             </div>
             <Footer />
@@ -134,11 +111,21 @@ const AllMemes: React.FC = () => {
 
 interface MemeCardProps {
     meme: Meme;
-    openModal: (meme: Meme) => void;
 }
 
-const MemeCard: React.FC<MemeCardProps> = ({ meme, openModal }) => {
+const MemeCard: React.FC<MemeCardProps> = ({ meme }) => {
     const [isHovered, setIsHovered] = useState<boolean>(false);
+    const [selectedMeme, setSelectedMeme] = useState<Meme | undefined>(
+        undefined
+    );
+    const openModal = (meme: Meme) => {
+        setSelectedMeme(meme); // Set the selected meme
+        console.log("clicked modal -------------", meme); // Log the selected meme
+    };
+
+    const closeModal = () => {
+        setSelectedMeme(undefined); // Reset the selected meme
+    };
 
     return (
         <div
@@ -153,10 +140,12 @@ const MemeCard: React.FC<MemeCardProps> = ({ meme, openModal }) => {
                 height={400}
                 className="w-full h-48 object-cover cursor-pointer"
                 unoptimized={true}
-                onClick={() => openModal(meme)}
             />
             {isHovered && (
-                <div className="absolute inset-0 flex flex-col justify-between p-4 bg-black bg-opacity-50">
+                <div
+                    onClick={() => openModal(meme)}
+                    className="absolute inset-0 flex flex-col justify-between p-4 bg-black bg-opacity-50"
+                >
                     <div className="flex justify-between text-gray-300 mb-2">
                         <div className="flex gap-2">
                             <UserCircle /> {meme.owner_name}
@@ -172,7 +161,7 @@ const MemeCard: React.FC<MemeCardProps> = ({ meme, openModal }) => {
                                 {"  "}
                                 {meme.likes}
                             </button>
-                            <button className=" text-gray-200 hover:text-gray-500 flex items-center">
+                            <button className="text-gray-200 hover:text-gray-500 flex items-center">
                                 <Bookmark />
                             </button>
                         </div>
@@ -181,6 +170,13 @@ const MemeCard: React.FC<MemeCardProps> = ({ meme, openModal }) => {
                         </button>
                     </div>
                 </div>
+            )}
+            {selectedMeme && (
+                <MemeModal
+                    isOpen={!!selectedMeme}
+                    onClose={closeModal}
+                    meme={selectedMeme}
+                />
             )}
         </div>
     );

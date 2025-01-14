@@ -11,14 +11,16 @@ import {
     Image,
 } from "@nextui-org/react";
 import { Heart, MoreHorizontal, Share2, X } from "lucide-react";
+import CopyToClipboardButton from "../Button/CopyToClipboardButton";
 
 interface MemeModalProps {
     isOpen: boolean;
     onClose: () => void;
     meme: {
         id: string;
-        url: string;
-        name: string;
+        meme_url: string;
+        meme_name: string;
+        owner_name: string;
         prompt: string;
         likes: number;
     };
@@ -41,7 +43,7 @@ export function MemeModal({ isOpen, onClose, meme }: MemeModalProps) {
         <Modal
             isOpen={isOpen}
             onClose={onClose}
-            size="5xl"
+            size="2xl"
             scrollBehavior="inside"
             classNames={{
                 base: "bg-[#0f1115] text-white",
@@ -54,13 +56,28 @@ export function MemeModal({ isOpen, onClose, meme }: MemeModalProps) {
                         <div className="flex flex-col md:flex-row h-[90vh] md:h-[80vh]">
                             {/* Image Section */}
                             <div className="relative flex-1 bg-black">
+                                <Button
+                                    isIconOnly
+                                    className={`text-white bg-transparent hover:bg-white/20 ${
+                                        isLiked &&
+                                        "text-red-500 hover:text-red-600"
+                                    }`}
+                                    onPress={handleLike}
+                                >
+                                    <Heart className="h-5 w-5" />
+                                </Button>
                                 <Image
-                                    src={meme.url}
-                                    alt={meme.name}
+                                    src={meme.meme_url}
+                                    alt={meme.meme_name}
                                     className="object-contain w-full h-full"
                                     width={800}
                                     height={600}
                                 />
+                            </div>
+
+                            {/* Content Section */}
+                            <div className="w-full md:w-[400px] p-6 flex flex-col">
+                                {/* Header */}
                                 <Button
                                     isIconOnly
                                     className="absolute top-2 right-2 text-white bg-transparent hover:bg-white/20"
@@ -68,23 +85,16 @@ export function MemeModal({ isOpen, onClose, meme }: MemeModalProps) {
                                 >
                                     <X className="h-4 w-4" />
                                 </Button>
-                            </div>
-
-                            {/* Content Section */}
-                            <div className="w-full md:w-[400px] p-6 flex flex-col">
-                                {/* Header */}
                                 <div className="flex items-center justify-between mb-6">
                                     <div className="flex items-center gap-3">
                                         <div className="w-10 h-10 rounded-full bg-blue-500" />
                                         <div>
                                             <p className="font-medium">
-                                                {meme.name}
+                                                {meme.owner_name}
                                             </p>
-                                            <h2 className="text-xl font-bold">
-                                                {meme.name}
-                                            </h2>
                                         </div>
                                     </div>
+
                                     <Button
                                         isIconOnly
                                         className="text-white bg-transparent hover:bg-white/20"
@@ -94,11 +104,19 @@ export function MemeModal({ isOpen, onClose, meme }: MemeModalProps) {
                                 </div>
 
                                 {/* Prompt */}
+                                <h2 className="text-xl font-bold">
+                                    {meme.meme_name}
+                                </h2>
                                 <div className="flex-1">
                                     <div className="bg-white/5 rounded-lg p-4">
-                                        <p className="text-sm text-gray-300">
-                                            Prompt
-                                        </p>
+                                        <div className="flex justify-between">
+                                            <p className="text-sm text-gray-300 disabled">
+                                                Prompt
+                                            </p>
+                                            <CopyToClipboardButton
+                                                text={meme.prompt}
+                                            />
+                                        </div>
                                         <p
                                             className={`mt-2 text-sm ${
                                                 !isShowMore && "line-clamp-3"
@@ -106,7 +124,7 @@ export function MemeModal({ isOpen, onClose, meme }: MemeModalProps) {
                                         >
                                             {meme.prompt}
                                         </p>
-                                        {meme.name.length > 150 && (
+                                        {meme.prompt.length > 150 && (
                                             <button
                                                 onClick={() =>
                                                     setIsShowMore(!isShowMore)
@@ -124,16 +142,6 @@ export function MemeModal({ isOpen, onClose, meme }: MemeModalProps) {
                                 {/* Footer */}
                                 <div className="mt-6 flex items-center justify-between">
                                     <div className="flex items-center gap-4">
-                                        <Button
-                                            isIconOnly
-                                            className={`text-white bg-transparent hover:bg-white/20 ${
-                                                isLiked &&
-                                                "text-red-500 hover:text-red-600"
-                                            }`}
-                                            onPress={handleLike}
-                                        >
-                                            <Heart className="h-5 w-5" />
-                                        </Button>
                                         <Button
                                             isIconOnly
                                             className="text-white bg-transparent hover:bg-white/20"
