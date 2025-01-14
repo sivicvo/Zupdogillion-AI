@@ -6,26 +6,34 @@ import { Button } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import Header from "@/lib/components/layout/header";
 import Footer from "@/lib/components/layout/footer";
+import MemeModal from "@/lib/components/modal/Modal";
 
 interface Meme {
     id: string;
     url: string;
     name: string;
+    prompt: string;
+    likes: number;
 }
 
 const AllMemes = () => {
     const [memes, setMemes] = useState<Meme[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [visibleCount, setVisibleCount] = useState(12);
+    // const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    // const [selectedMemeUrl, setSelectedMemeUrl] = useState<string>("");
+    // const [selectedMemeName, setSelectedMemeName] = useState<string>("");
+    // const [selectedMemePrompt, setSelectedMemePrompt] = useState<string>("");
+    const [selectedMeme, setSelectedMeme] = useState<Meme>();
 
     useEffect(() => {
         const fetchMemes = async () => {
             setLoading(true);
             try {
-                // const res = await fetch("http://127.0.0.1:5328/api/all_memes");
-                const res = await fetch(
-                    "https://zupdogollion-ai-backend.vercel.app/api/all_memes"
-                );
+                const res = await fetch("http://127.0.0.1:5328/api/all_memes");
+                // const res = await fetch(
+                //     "https://zupdogollion-ai-backend.vercel.app/api/all_memes"
+                // );
                 if (!res.ok) {
                     throw new Error("Failed to fetch memes!");
                 }
@@ -47,6 +55,27 @@ const AllMemes = () => {
 
     const handleLoadMore = () => {
         setVisibleCount((prevCount) => prevCount + 12);
+    };
+
+    const openModal = (
+        // url: string,
+        // name: string,
+        // prompt: string,
+        meme: Meme
+    ) => {
+        // setSelectedMemeUrl(url);
+        // setSelectedMemeName(name);
+        // setSelectedMemePrompt(prompt);
+        setSelectedMeme(meme);
+        // setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        // setIsModalOpen(false);
+        // setSelectedMemeUrl("");
+        // setSelectedMemeName("");
+        // setSelectedMemePrompt("");
+        setSelectedMeme(undefined);
     };
 
     if (loading) {
@@ -99,17 +128,12 @@ const AllMemes = () => {
                                 height={400}
                                 className="w-full h-48 object-cover"
                                 unoptimized={true}
+                                onClick={() => openModal(meme)}
                             />
                             <div className="p-4">
-                                {/* <h2 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">
-                                    {meme.name}
-                                </h2> */}
-                                {/* Optional creator info */}
-                                {/* 
                                 <p className="text-gray-600 dark:text-gray-300 mb-4">
-                                    Created by {meme.creator}
-                                </p> 
-                                */}
+                                    Created by {meme.name}
+                                </p>
                                 <div className="flex justify-between items-center">
                                     <button className="text-blue-500 hover:text-blue-600 flex items-center">
                                         <ThumbsUp size={20} className="mr-1" />{" "}
@@ -132,6 +156,11 @@ const AllMemes = () => {
                         <Button onClick={handleLoadMore}>Load More</Button>
                     </div>
                 )}
+                <MemeModal
+                    isOpen={!!selectedMeme}
+                    onClose={closeModal}
+                    meme={selectedMeme}
+                />
             </div>
             <Footer />
         </>

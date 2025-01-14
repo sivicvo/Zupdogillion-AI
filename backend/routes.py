@@ -11,87 +11,98 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-#degine the main bludprint for general app functionality
+# Define the main blueprint for general app functionality
 main = Blueprint('main', __name__)
 
-#define the auth blueprint for authentication related routes
+# Define the auth blueprint for authentication-related routes
 auth_bp = Blueprint('auth', __name__)
 mail = Mail()
 
 @main.route('/')
 def home():
-    # latest_memes = Meme.query.order_by(Meme.id.desc()).limit(5).all()
-    # popular_memes = Meme.query.order_by(Meme.id.desc()).limit(5).all()  # Replace with actual popularity logic
-    # return render_template('home.html', latest=latest_memes, popular=popular_memes)
     return "Hello, backend!"
 
 @main.route('/api/generate', methods=['POST'])
 def generate():
-    # data = request.get_json()
+    # Placeholder for generating memes logic
     return jsonify(True)
 
 @main.route('/api/all_memes', methods=['GET'])
 def all_memes():
-    responses = requests.get('https://api.imgflip.com/get_memes')
-    memes_data = responses.json()
-    return jsonify(memes_data)
+    # Fetch all memes from the database
+    memes = Meme.query.all()
+    return jsonify([{
+        'id': meme.id,
+        'owner_id': meme.owner_id,
+        'meme_url': meme.meme_url,
+        'meme_name': meme.meme_name,
+        'prompt': meme.prompt,
+        'category': meme.category,
+        'created_at': meme.created_at,
+        'likes': meme.likes
+    } for meme in memes])
 
 @main.route('/api/save_memes', methods=['POST'])
+@login_required  # Ensure the user is logged in to save a meme
 def save_memes():
-    return 'You saved meme'
-
-
-# @main.route('/pricing')
-# def pricing():
-#     return render_template('pricing.html')
-
-# @main.route('/about')
-# def about():
-#     return render_template('about.html')
+    data = request.get_json()
+    new_meme = Meme(
+        owner_id=current_user.id,
+        meme_url=data['meme_url'],
+        meme_name=data['meme_name'],
+        prompt=data['prompt'],
+        category=data['category'],
+        likes=0  # Initialize likes to zero
+    )
+    
+    db.session.add(new_meme)
+    db.session.commit()
+    
+    return jsonify({"message": "Meme saved successfully!"}), 201
 
 # @auth_bp.route('/register', methods=['POST'])
 # def register():
 #     data = request.get_json()
 #     email = data['email']
-#     password = data['password']
+#     name = data['name']
 
-#     #check if user already exists
+#     # Check if user already exists
 #     if User.query.filter_by(email=email).first():
-#         return jsonify({"message" : "User already exists!"}), 400
+#         return jsonify({"message": "User already exists!"}), 400
     
-#     #create a new user
-#     new_user = User(email=email)
-#     new_user.set_password(password) #assume set_password hashes the password
+#     # Create a new user without a password field since using next-auth
+#     new_user = User(email=email, name=name)
+    
 #     db.session.add(new_user)
 #     db.session.commit()
 
-#     return jsonify({"message": "User registed successfully!"}), 201
+#     return jsonify({"message": "User registered successfully!"}), 201
 
 # @auth_bp.route('/login', methods=['POST'])
 # def login():
 #     data = request.get_json()
-
-#     if not data or 'email' not in data or 'password' not in data:
-#         return jsonify({"message": "Missing email or password."}), 400
+    
+#     if not data or 'email' not in data:
+#         return jsonify({"message": "Missing email."}), 400
     
 #     email = data['email']
-#     password = data['password']
-
+    
 #     user = User.query.filter_by(email=email).first()
 
-#     if user and user.check_password(password):
-#         if not user.is_active:
-#             return jsonify({"message": "Account is inactive."}), 403
+#     if user:
 #         access_token = create_access_token(identity=user.id)
 #         refresh_token = create_refresh_token(identity=user.id)
+        
 #         return jsonify({
-#                     "access_token": access_token,
-#                     "refresh_token": refresh_token,
-#                     "user": {
-#                         "id": user.id,
-#                         "email": user.email
-#                     }
-#                 }), 200
+#             "access_token": access_token,
+#             "refresh_token": refresh_token,
+#             "user": {
+#                 "id": user.id,
+#                 "email": user.email,
+#                 "name": user.name
+#             }
+#         }), 200
+
 #     return jsonify({"message": "Invalid credentials"}), 401
 
 # @auth_bp.route('/logout', methods=['POST'])
@@ -101,45 +112,47 @@ def save_memes():
 #     session.clear()
 #     return jsonify({"message": "Logged out successfully!"}), 200
 
-@auth_bp.route('/protected', methods=['GET'])
-@login_required
-def protected():
-    return jsonify({"message": f"Hello {current_user.email}!"}), 200
+# @auth_bp.route('/protected', methods=['GET'])
+# @login_required
+# def protected():
+#     return jsonify({"message": f"Hello {current_user.email}!"}), 200
 
-@auth_bp.route('/forgot-password', methods=['POST'])
-def forgot_password():
-    data = request.get_json()
-    email = data['email']
+# @auth_bp.route('/forgot-password', methods=['POST'])
+# def forgot_password():
+#     data = request.get_json()
+#     email = data['email']
 
-    user = User.query.filter_by(email=email).first()
-    if user:
-        reset_token = str(uuid.uuid4())
-        expiration_time = datetime.utcnow() + timedelta(hours=1)
-
-        user.reset_token = reset_token
-        user.token_expiration = expiration_time
-        db.session.commit()
-
-        msg = Message('Password Reset Request', sender='jackpassiondev07@gmail.com', recipients=[email])
-        msg.body = f'Click the link to reset your password: http://localhost:3000/auth/reset-password/{reset_token}'
-        mail.send(msg)
+#     user = User.query.filter_by(email=email).first()
     
-    return jsonify({"Message": "If that email is registered, you will receive a password reset link."}), 200
+#     if user:
+#         reset_token = str(uuid.uuid4())
+#         expiration_time = datetime.utcnow() + timedelta(hours=1)
 
-@auth_bp.route('/reset-password/<token>', methods=['POST'])
-def reset_password(token):
-    data = request.get_json()
-    password = data['password']
+#         user.reset_token = reset_token
+#         user.token_expiration = expiration_time
+#         db.session.commit()
 
-    user = User.query.filter_by(reset_token=token).first()
+#         msg = Message('Password Reset Request', sender='your-email@example.com', recipients=[email])
+#         msg.body = f'Click the link to reset your password: http://localhost:3000/auth/reset-password/{reset_token}'
+#         mail.send(msg)
 
-    if user and user.token_expiration > datetime.utcnow():
-        user.set_password(password)
-        user.reset_token = None
-        user.token_expiration = None
-        db.session.commit()
+#     return jsonify({"Message": "If that email is registered, you will receive a password reset link."}), 200
 
-        return jsonify({"message": "Password has been updated successfully."}), 200
+# @auth_bp.route('/reset-password/<token>', methods=['POST'])
+# def reset_password(token):
+#     data = request.get_json()
     
-    return jsonify({"message": "Invalid or expired token."}), 400
+#     password = data['password']
+    
+#     user = User.query.filter_by(reset_token=token).first()
+
+#     if user and user.token_expiration > datetime.utcnow():
+#         user.set_password(password)  # Assuming you have a method to set the password hash in User model
+#         user.reset_token = None
+#         user.token_expiration = None
+#         db.session.commit()
+
+#         return jsonify({"message": "Password has been updated successfully."}), 200
+    
+#     return jsonify({"message": "Invalid or expired token."}), 400
 
