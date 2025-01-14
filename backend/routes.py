@@ -30,17 +30,19 @@ def generate():
 @main.route('/api/all_memes', methods=['GET'])
 def all_memes():
     # Fetch all memes from the database
-    memes = Meme.query.all()
+    # memes = Meme.query.all()
+    memes = db.session.query(Meme, User.name).join(User).all()
     return jsonify([{
         'id': meme.id,
         'owner_id': meme.owner_id,
+        'owner_name': owner_name,
         'meme_url': meme.meme_url,
         'meme_name': meme.meme_name,
         'prompt': meme.prompt,
         'category': meme.category,
         'created_at': meme.created_at,
         'likes': meme.likes
-    } for meme in memes])
+    } for meme, owner_name in memes])
 
 @main.route('/api/save_memes', methods=['POST'])
 @login_required  # Ensure the user is logged in to save a meme
