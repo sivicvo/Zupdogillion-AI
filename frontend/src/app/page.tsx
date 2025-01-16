@@ -97,7 +97,7 @@ export default async function Home() {
                     </div>
                 </section>
 
-                <section className="mb-16 pt-16">
+                <section className="mb-16 pt-16 shadow-inner">
                     <h2 className="text-6xl font-bold mb-6 text-gray-100 dark:text-white">
                         <span className="text-blue-600"> Publish </span> and
                         <span className="text-blue-600"> Look </span>other{" "}
@@ -128,10 +128,10 @@ export default async function Home() {
                 </section>
 
                 <section className="mb-16">
-                    <h2 className="text-6xl font-bold mb-6 text-gray-100 dark:text-white text-center">
+                    <h2 className="text-7xl font-bold mb-6 text-gray-100 dark:text-white text-center">
                         Zupdogillion.ai Tutorial
                     </h2>
-                    <p className="text-center pb-10 text-gray-300">
+                    <p className="text-center pb-16 text-gray-300 text-xl">
                         Why should you use Zupdogillion.ai to generate memes
                         over other popular tools?
                     </p>

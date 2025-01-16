@@ -33,10 +33,14 @@ const AllMemes: React.FC = () => {
         const fetchMemes = async () => {
             setLoading(true);
             try {
-                const res = await fetch("http://127.0.0.1:5328/api/all_memes");
+                // const res = await fetch("http://127.0.0.1:5328/api/all_memes");
+                const res = await fetch(
+                    "https://zupdogollion-ai.onrender.com/api/all_memes"
+                );
                 if (!res.ok) {
                     throw new Error("Failed to fetch memes!");
                 }
+
                 const data: Meme[] = await res.json();
                 console.log("memes from backend ------------>", data);
                 setMemes(data);
@@ -83,10 +87,10 @@ const AllMemes: React.FC = () => {
                     <div className="flex relative">
                         <input
                             type="text"
-                            placeholder="Search memes..."
-                            className="w-full p-2 border pl-4 text-white border-gray-300 rounded-l-md focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                            className="bg-gray-700 text-white rounded-l-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="Search Memes"
                         />
-                        <Button className="bg-white rounded-r-md">
+                        <Button className="bg-[#89B8EF] text-blue-950 rounded-r-md">
                             Search
                         </Button>
                     </div>

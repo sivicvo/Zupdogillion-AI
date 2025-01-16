@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import { Moon, Sun, User } from "lucide-react";
-import axios from "axios";
 import {
     Button,
     Dropdown,
@@ -13,37 +12,15 @@ import {
 } from "@nextui-org/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import Logo from "@/shared/assets/logo.png";
 
 const Header = () => {
     const { theme, setTheme } = useTheme();
-    const [isLogged, setIsLogged] = useState("false");
-    const token = localStorage.getItem("token");
+    const [isLogged, setIsLogged] = useState(false);
 
     useEffect(() => {
-        setIsLogged("true");
-    }, [token]);
-
-    const handleLogout = async () => {
-        try {
-            const token = localStorage.getItem("token");
-            console.log("token", token);
-            console.log("local storage : ", `Bearer ${token}`);
-            await axios.post(
-                "https://zupdogollion-ai-backend.vercel.app/auth/logout",
-                {},
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`, // Include the token in the headers
-                    },
-                }
-            );
-            localStorage.removeItem("token"); // Clear token from local storage
-            window.location.href = "/signin"; // Redirect to login page
-        } catch (error) {
-            console.error("Logout failed:", error);
-            alert("Logout failed. Please try again.");
-        }
-    };
+        setIsLogged(true);
+    }, []);
 
     return (
         <header className="bg-[#080c11] dark:bg-gray-800 shadow-md">
@@ -58,14 +35,12 @@ const Header = () => {
                             style={{ display: "flex", alignItems: "center" }}
                         >
                             <Image
-                                src="wolf.svg"
-                                width={50}
+                                src={Logo}
+                                width={250}
                                 height={50}
                                 alt="logo"
+                                unoptimized={true}
                             />
-                            <h3 className="text-lg font-semibold mb-0 ml-2 text-gray-100 dark:text-white">
-                                Zupdogillion.ai
-                            </h3>
                         </div>
                     </Link>
                     <nav className="hidden md:block">
@@ -148,10 +123,7 @@ const Header = () => {
                                                 Pricing
                                             </Link>
                                         </DropdownItem>
-                                        <DropdownItem
-                                            key="logout"
-                                            onAction={handleLogout}
-                                        >
+                                        <DropdownItem key="logout">
                                             <Button className="block px-4 py-2 text-sm mb-0 text-gray-100 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">
                                                 Logout
                                             </Button>
@@ -163,13 +135,13 @@ const Header = () => {
                             <div className="flex">
                                 <Link
                                     href="/signin"
-                                    className="block px-4 py-2 text-sm text-gray-100 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
+                                    className="block px-4 py-2 text-sm text-gray-100 dark:text-gray-200 hover:text-gray-600 dark:hover:bg-gray-600"
                                 >
                                     Sign In
                                 </Link>
                                 <Link
                                     href="/signup"
-                                    className="block px-4 py-2 text-sm text-gray-100 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
+                                    className="block px-4 py-2 text-sm text-gray-100 dark:text-gray-200 hover:text-gray-600 dark:hover:bg-gray-600"
                                 >
                                     Sign Up
                                 </Link>{" "}
