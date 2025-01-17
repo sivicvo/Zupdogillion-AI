@@ -24,7 +24,7 @@ def home():
 
 @main.route('/api/generate', methods=['POST'])
 def generate():
-    # Placeholder for generating memes logic
+    
     return jsonify(True)
 
 @main.route('/api/all_memes', methods=['GET'])

@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import AuthSessionProvider from "@/lib/auth/AuthSessionProvider";
+// import AuthSessionProvider from "@/lib/auth/AuthSessionProvider";
 import { getServerSession } from "next-auth";
 import authConfig from "@/lib/auth/authConfig";
 import { Providers } from "./providers";
 import { ToastContainer } from "react-toastify";
+import AuthSessionProvider from "@/lib/auth/AuthSessionProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 

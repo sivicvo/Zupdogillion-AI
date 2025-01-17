@@ -11,7 +11,7 @@ interface Meme {
     meme_name: string;
 }
 
-export default function MyMemes() {
+export default function SavedMemes() {
     const [memes, setMemes] = useState<Meme[]>([]);
     // const [isLoading, setIsLoading] = useState(false);
     const [loading, setLoading] = useState<boolean>(true);
@@ -67,7 +67,7 @@ export default function MyMemes() {
                     <div className="container mx-auto px-4 py-8 divide-y divide-dashed gap-6">
                         <div className="my-6">
                             <h1 className="text-5xl font-bold mb-4 text-gray-100 dark:text-white">
-                                My Memes
+                                Saved Memes
                             </h1>
                             <h1 className="text-xl font-bold mb-4 text-gray-100 dark:text-white">
                                 Explore all memes
@@ -97,11 +97,7 @@ export default function MyMemes() {
                                         alt="memes"
                                         width={400}
                                         height={400}
-                                        // fill
-                                        // sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                                         className="object-contain"
-                                        // objectFit="contain"
-                                        // sizes="100vw"
                                         unoptimized={true}
                                     />
                                 </div>

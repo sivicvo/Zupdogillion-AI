@@ -1,148 +1,126 @@
 "use client";
 
-import React from "react";
-import {
-    Button,
-    Input,
-    Link,
-    Divider,
-    // User,
-    Checkbox,
-} from "@nextui-org/react";
-import { Icon } from "@iconify/react";
+import Image from "next/image";
+import { useState } from "react";
+import BannerGif from "@/shared/assets/JB4o.gif";
+import { signIn } from "next-auth/react";
+import GoogleIcon from "@/shared/assets/google.svg";
 
-import PrimaryButton from "@/lib/components/Button/PrimaryButton";
-// import WalletIcon from "@/public/icon/wallet.svg";
+export default function SignInPage() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
 
-export default function Component() {
-    const [isVisible, setIsVisible] = React.useState(false);
-
-    const toggleVisibility = () => setIsVisible(!isVisible);
+    const handleSignUp = () => {
+        console.log("Signing up with email:", email);
+    };
 
     return (
-        <div className="auth__container relative flex h-screen w-screen">
-            <div className="flex w-full items-center justify-center lg:w-1/2">
-                <div className="flex w-full max-w-sm flex-col items-center gap-4 p-4">
-                    <div className="w-full text-left">
-                        <p className="pb-2 text-xl font-medium">
-                            Create Account
-                        </p>
-                        <p className="text-small text-default-500">
-                            Sign up for a new account to get started
-                        </p>
-                    </div>
-
-                    <form
-                        className="flex w-full flex-col gap-3"
-                        onSubmit={(e) => e.preventDefault()}
+        <div className="flex items-center justify-center w-full">
+            <div className="lg:flex mt-[50px] lg:mt-[250px] lg:gap-0 mx-auto xl:gap-10 items-center">
+                <div className="mx-5 rounded-md">
+                    <Image
+                        src={BannerGif}
+                        unoptimized={true}
+                        height={400}
+                        alt="signin image"
+                        className="rounded-[10px]"
+                    />
+                </div>
+                <div className="flex mt-10 lg:mt-0 flex-col justify-center rounded-lg mx-5 lg:w-[500px]">
+                    <h1 className="text-3xl text-center font-bold text-white mb-8">
+                        Ready to meet your Meme Generator?
+                    </h1>
+                    <button
+                        onClick={() =>
+                            signIn("google", {
+                                callbackUrl: "/generate",
+                            })
+                        }
+                        className="flex justify-center bg-white text-gray-900 mx-24 py-2 rounded-full items-center gap-4"
                     >
-                        <Input
-                            isRequired
-                            label="Email Address"
-                            name="email"
-                            placeholder="Enter your email"
+                        <Image
+                            src={GoogleIcon}
+                            width={25}
+                            height={25}
+                            alt="google icon"
+                        />
+                        Sign up with Google
+                    </button>
+                    <div className="relative flex py-5 items-center mx-16">
+                        <div className="flex-grow border-t border-gray-400"></div>
+                        <span className="flex-shrink mx-4 text-gray-400">
+                            or
+                        </span>
+                        <div className="flex-grow border-t border-gray-400"></div>
+                    </div>
+
+                    <div className="mb-4 mt-2">
+                        <label
+                            htmlFor="email"
+                            className="block text-gray-400 font-medium mb-2"
+                        >
+                            Email
+                        </label>
+                        <input
                             type="email"
-                            variant="underlined"
+                            id="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="bg-gray-700 text-white rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="Enter your email"
                         />
-                        <Input
-                            isRequired
-                            endContent={
-                                <button
-                                    type="button"
-                                    onClick={toggleVisibility}
-                                >
-                                    {isVisible ? (
-                                        <Icon
-                                            className="pointer-events-none text-2xl text-default-400"
-                                            icon="solar:eye-closed-linear"
-                                        />
-                                    ) : (
-                                        <Icon
-                                            className="pointer-events-none text-2xl text-default-400"
-                                            icon="solar:eye-bold"
-                                        />
-                                    )}
-                                </button>
-                            }
-                            label="Password"
-                            name="password"
-                            placeholder="Create a password"
-                            type={isVisible ? "text" : "password"}
-                            variant="underlined"
+                    </div>
+                    <div className="mb-4">
+                        <label
+                            htmlFor="password"
+                            className="block text-gray-400 font-medium mb-2"
+                        >
+                            Password
+                        </label>
+                        <input
+                            type="password"
+                            id="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="bg-gray-700 text-white rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="Enter your password"
                         />
-                        <Input
-                            isRequired
-                            label="Confirm Password"
-                            name="confirmPassword"
+                    </div>
+                    <div className="mb-4">
+                        <label
+                            htmlFor="password"
+                            className="block text-gray-400 font-medium mb-2"
+                        >
+                            Confirm Password
+                        </label>
+                        <input
+                            type="password"
+                            id="confirm_password"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            className="bg-gray-700 text-white rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="Confirm your password"
-                            type={isVisible ? "text" : "password"}
-                            variant="underlined"
                         />
-                        <Checkbox isRequired className="py-4" size="sm">
-                            I agree with the&nbsp;
-                            <Link href="#" size="sm">
-                                Terms
-                            </Link>
-                            &nbsp; and&nbsp;
-                            <Link href="#" size="sm">
-                                Privacy Policy
-                            </Link>
-                        </Checkbox>
-                        <PrimaryButton className="w-full" text="Sign Up" />
-                    </form>
-
-                    <div className="flex w-full items-center gap-4 py-2">
-                        <Divider className="flex-1" />
-                        <p className="shrink-0 text-tiny text-default-500">
-                            OR
-                        </p>
-                        <Divider className="flex-1" />
                     </div>
-
-                    <div className="flex w-full flex-col gap-2">
-                        <Button
-                            startContent={
-                                <Icon
-                                    icon="flat-color-icons:google"
-                                    width={24}
-                                />
-                            }
-                            variant="bordered"
+                    <button
+                        onClick={handleSignUp}
+                        className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md w-full"
+                    >
+                        Sign Up
+                    </button>
+                    <div className="flex justify-center mt-4">
+                        Already have an account?
+                        <a
+                            href="/signin"
+                            className="text-gray-400 hover:text-gray-300"
                         >
-                            Sign Up with Google
-                        </Button>
-                        {/* <Button
-                            startContent={
-                                <WalletIcon
-                                    className="text-default-500"
-                                    width={24}
-                                />
-                            }
-                            variant="bordered"
-                        >
-                            Sign Up with Wallet
-                        </Button> */}
-                    </div>
-
-                    <div className="text-center text-small">
-                        Already have an account?&nbsp;
-                        <Link href="/signin" size="sm">
-                            Log In
-                        </Link>
+                            &nbsp;{" "}
+                            <span className="text-[#89B8EF]"> Sign in </span>
+                        </a>
                     </div>
                 </div>
             </div>
-
-            {/* Right side */}
-            <div
-                className="relative hidden w-1/2 flex-col-reverse rounded-medium p-10 shadow-small lg:flex"
-                style={{
-                    backgroundImage:
-                        "url(https://nextuipro.nyc3.cdn.digitaloceanspaces.com/components-images/white-building.jpg)",
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                }}
-            ></div>
         </div>
     );
 }
