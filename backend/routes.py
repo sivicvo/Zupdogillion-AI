@@ -24,8 +24,32 @@ def home():
 
 @main.route('/api/generate', methods=['POST'])
 def generate():
-    
-    return jsonify(True)
+    try:
+        prompt = request.form.get('prompt', 'memes of a cat')
+        response = requests.post(
+            f"https://api.stability.ai/v2beta/stable-image/generate/core",
+            headers={
+                "authorization": "Bearer sk-WY6wAZKF28BX8oIXTlnrDKYLUaSrSnWCvrcjiAkn7EmZDYi4",
+                "accept": "image/*"
+            },
+            files={"none": ''},
+            data={
+                "prompt": prompt,
+                "output_format": "webp",
+            },
+        )
+
+        if response.status_code == 200:
+            with open(f'./images/${prompt}.webp', 'wb') as file:
+                file.write(response.content)
+        else:
+            print(response.json())
+            raise Exception(str(response.json()))
+        
+        return {"message": "Image generated successfully"}
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @main.route('/api/all_memes', methods=['GET'])
 def all_memes():
