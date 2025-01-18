@@ -1,7 +1,5 @@
 # Zupdogollion AI
 
-**Date:** Tuesday, January 14, 2025, 3 AM JST
-
 ## Overview
 
 Zupdogollion AI is an innovative platform that allows users to create memes effortlessly by entering text prompts. The generated memes are created using the Imgflip API and can be shared on Twitter with a specific hashtag. Users can also view, vote on, and track the most liked memes of the day on the website. The platform aims to enhance user engagement through meme creation and sharing.
