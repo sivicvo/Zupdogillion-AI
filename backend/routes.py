@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, jsonify, session
+from flask import Blueprint, render_template, request, jsonify, session, send_from_directory
 from flask_login import logout_user, login_required, current_user
 import uuid
 from datetime import datetime, timedelta
@@ -8,6 +8,7 @@ from flask_mail import Mail, Message
 import requests
 import os
 from dotenv import load_dotenv
+import random
 
 load_dotenv()
 
@@ -17,6 +18,8 @@ main = Blueprint('main', __name__)
 # Define the auth blueprint for authentication-related routes
 auth_bp = Blueprint('auth', __name__)
 mail = Mail()
+
+image_history = []
 
 @main.route('/')
 def home():
@@ -35,21 +38,32 @@ def generate():
             files={"none": ''},
             data={
                 "prompt": prompt,
-                "output_format": "webp",
+                "output_format": "png",
             },
         )
 
+        image_name = str(uuid.uuid4())
+
         if response.status_code == 200:
-            with open(f'./images/${prompt}.webp', 'wb') as file:
+            with open(f'./images/{image_name}.png', 'wb') as file:
                 file.write(response.content)
+            image_history.append(f'/images/{image_name}.png')
         else:
             print(response.json())
             raise Exception(str(response.json()))
         
-        return {"message": "Image generated successfully"}
+        return {"image_url": f'/images/{image_name}.png'}
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+@main.route('/api/history', methods=['GET'])
+def get_history():
+    return jsonify({"history": image_history})
+    
+@main.route('/images/<path:filename>')
+def send_image(filename):
+    return send_from_directory('images', filename)
 
 @main.route('/api/all_memes', methods=['GET'])
 def all_memes():

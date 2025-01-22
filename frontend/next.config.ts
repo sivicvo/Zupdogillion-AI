@@ -3,12 +3,13 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   images: {
     loader: 'akamai',
-    // domains: ['lh3.googleusercontent.com'],
+    domains: ['locahost'],
     path: '/',
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'lh3.googleusercontent.com',
+        protocol: 'http',
+        // hostname: 'lh3.googleusercontent.com',
+        hostname: 'localhost:5328',
         port: '',
         pathname: '/**', 
       },
