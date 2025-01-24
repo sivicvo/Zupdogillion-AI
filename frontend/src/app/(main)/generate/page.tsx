@@ -119,8 +119,8 @@ export default function Generate() {
         <div className="flex min-h-screen">
             <Sidebar />
             <main className="flex-1 bg-[#090e14]">
-                <div className="flex flex-col h-[calc(100vh-2rem)] mx-auto p-4">
-                    <div className="flex flex-col border-2 border-dashed h-[620px] border-gray-700 rounded-lg w-full items-center justify-center relative text-center text-gray-300 p-4">
+                <div className="flex flex-col h-[calc(100vh-2rem)] mx-5 lg:w-[1200px] p-4">
+                    <div className="flex flex-col border-2 border-dashed h-[900px] border-gray-700 rounded-lg w-full items-center justify-center relative text-center text-gray-300 p-4">
                         {!session ? (
                             <div>
                                 <div className="text-xl mb-4">
