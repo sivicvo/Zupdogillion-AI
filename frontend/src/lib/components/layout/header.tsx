@@ -80,19 +80,15 @@ const Header = () => {
                         </ul>
                     </nav>
                     <div className="flex items-center space-x-4">
-                        <button
+                        <div
                             onClick={() =>
                                 setTheme(theme === "dark" ? "light" : "dark")
                             }
                             className="p-2 rounded-full bg-gray-200 dark:bg-gray-700"
                             aria-label="Toggle theme"
                         >
-                            {theme === "dark" ? (
-                                <Sun size={20} />
-                            ) : (
-                                <Moon size={20} />
-                            )}
-                        </button>
+                            {theme === "dark" ? <Sun size={20}/> : <Moon />}
+                        </div>
 
                         {!isLogged ? (
                             <div className="relative mb-0">

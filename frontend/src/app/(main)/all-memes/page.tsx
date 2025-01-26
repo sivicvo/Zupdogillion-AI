@@ -33,7 +33,7 @@ const AllMemes: React.FC = () => {
         const fetchMemes = async () => {
             setLoading(true);
             try {
-                // const res = await fetch("http://127.0.0.1:5328/api/all_memes");
+                // const res = await fetch("https://mongoose-infinite-truly.ngrok-free.app/api/all_memes");
                 const res = await fetch(
                     "https://zupdogollion-ai.onrender.com/api/all_memes"
                 );

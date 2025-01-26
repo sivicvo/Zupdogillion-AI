@@ -13,16 +13,20 @@ export default function Generate() {
     const [error, setError] = useState("");
     const [history, setHistory] = useState<string[]>([]);
 
-    const { data: session, status } = useSession();
+    const { data: session } = useSession();
 
     useEffect(() => {
+        console.log("data.history generated meme: in use effect ");
         fetchHistory();
     }, []);
 
     const fetchHistory = async () => {
         try {
-            const response = await fetch("http://localhost:5328/api/history");
+            const response = await fetch(
+                "https://mongoose-infinite-truly.ngrok-free.app/api/history"
+            );
             const data = await response.json();
+            console.log("data.history generated meme: ", data.history);
             setHistory(data.history);
         } catch (error) {
             console.error("Error fetching history: ", error);
@@ -34,28 +38,29 @@ export default function Generate() {
             setError("Please enter a prompt");
             return;
         }
-    
+
         setError("");
         setIsGenerating(true);
         fetchHistory();
-    
+
         try {
             const formData = new FormData();
             formData.append("prompt", prompt.trim());
-            
-            const response = await fetch("http://localhost:5328/api/generate", {
-                method: "POST",
-                body: formData
-            });
-    
+
+            const response = await fetch(
+                "https://mongoose-infinite-truly.ngrok-free.app/api/generate",
+                {
+                    method: "POST",
+                    body: formData,
+                }
+            );
+
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-    
+
             const data = await response.json();
-            setImageUrl(`http://localhost:5328${data.image_url}`);
-            
-    
+            setImageUrl(data.image_url);
         } catch (error) {
             console.error("Error generating meme: ", error);
             setError("Failed to generate meme. Please try again.");
@@ -63,12 +68,12 @@ export default function Generate() {
             setIsGenerating(false);
         }
     };
-    
+
     const MemeDisplay = () => {
         if (error) {
             return <div className="text-red-500">{error}</div>;
         }
-    
+
         if (isGenerating) {
             return (
                 <div className="flex items-center justify-center">
@@ -76,14 +81,15 @@ export default function Generate() {
                 </div>
             );
         }
-    
+
         if (imageUrl) {
+            console.log("url from generated meme: ", imageUrl);
             return (
                 <div className="flex justify-center relative items-center w-full">
-                    <Image 
-                        src={imageUrl} 
+                    <Image
+                        src={imageUrl}
                         alt="Generated meme"
-                        width={350} 
+                        width={350}
                         height={300}
                         unoptimized={true}
                         className="rounded-lg"
@@ -92,8 +98,10 @@ export default function Generate() {
                 </div>
             );
         }
-    
-        return <div className="text-xl mt-5">Generate new meme with your idea</div>;
+
+        return (
+            <div className="text-xl mt-5">Generate new meme with your idea</div>
+        );
     };
 
     const HistoryDisplay = () => (
@@ -101,10 +109,10 @@ export default function Generate() {
             <div className="flex flex-row flex-wrap gap-4">
                 {history.map((url, index) => (
                     <div key={index} className="relative">
-                        <Image 
-                            src={`http://localhost:5328${url}`} 
+                        <Image
+                            src={`https://mongoose-infinite-truly.ngrok-free.app${url}`}
                             alt={`Generated meme ${index + 1}`}
-                            width={100} 
+                            width={100}
                             height={100}
                             unoptimized={true}
                             className="rounded-lg"
@@ -114,7 +122,7 @@ export default function Generate() {
             </div>
         </div>
     );
-    
+
     return (
         <div className="flex min-h-screen">
             <Sidebar />
@@ -127,7 +135,9 @@ export default function Generate() {
                                     If you want to create a meme{" "}
                                     <div>
                                         firstly{" "}
-                                        <span className="text-blue-300">join us</span>
+                                        <span className="text-blue-300">
+                                            join us
+                                        </span>
                                     </div>
                                 </div>
                                 <Link
@@ -144,7 +154,7 @@ export default function Generate() {
                             </div>
                         )}
                     </div>
-    
+
                     <div className="mt-6 flex gap-2">
                         <input
                             type="text"
@@ -156,9 +166,11 @@ export default function Generate() {
                         />
                         <button
                             onClick={handleGenerate}
-                            disabled={isGenerating || !session || !prompt.trim()}
+                            disabled={
+                                isGenerating || !session || !prompt.trim()
+                            }
                             className={`px-6 py-2 rounded-lg transition-colors ${
-                                session 
+                                session
                                     ? "bg-blue-500 hover:bg-blue-600 text-white disabled:bg-blue-300 disabled:cursor-not-allowed"
                                     : "bg-blue-900 text-gray-300 cursor-not-allowed"
                             }`}

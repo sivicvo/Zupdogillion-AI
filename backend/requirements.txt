@@ -12,3 +12,4 @@ SQLAlchemy==2.0.36
 psycopg2==2.9.10
 gunicorn==23.0.0
 waitress==3.0.2
+cloudinary==1.42.1

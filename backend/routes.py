@@ -9,6 +9,9 @@ import requests
 import os
 from dotenv import load_dotenv
 import random
+import cloudinary
+import cloudinary.uploader
+from cloudinary import CloudinaryImage
 
 load_dotenv()
 
@@ -18,6 +21,8 @@ main = Blueprint('main', __name__)
 # Define the auth blueprint for authentication-related routes
 auth_bp = Blueprint('auth', __name__)
 mail = Mail()
+
+config = cloudinary.config(secure=True)
 
 image_history = []
 
@@ -29,30 +34,66 @@ def home():
 def generate():
     try:
         prompt = request.form.get('prompt', 'memes of a cat')
-        response = requests.post(
-            f"https://api.stability.ai/v2beta/stable-image/generate/core",
-            headers={
-                "authorization": "Bearer sk-WY6wAZKF28BX8oIXTlnrDKYLUaSrSnWCvrcjiAkn7EmZDYi4",
-                "accept": "image/*"
-            },
-            files={"none": ''},
-            data={
-                "prompt": prompt,
-                "output_format": "png",
-            },
-        )
+        overlay_text_top = request.form.get('overlay_text_top', 'Your Text Here')
+        overlay_text_bottom = request.form.get('overlay_text_bottom', 'Your Text Here')
+        # response = requests.post(
+        #     f"https://api.stability.ai/v2beta/stable-image/generate/core",
+        #     headers={
+        #         "authorization": f"Bearer {os.getenv('STABILITY_API_KEY')}",
+        #         "accept": "image/*"
+        #     },
+        #     files={"none": ''},
+        #     data={
+        #         "prompt": prompt,
+        #         "output_format": "png",
+        #     },
+        # )
+        # print('response status from stability ai ->', response.status_code)
 
-        image_name = str(uuid.uuid4())
+        # image_name = str(uuid.uuid4())
 
-        if response.status_code == 200:
-            with open(f'./images/{image_name}.png', 'wb') as file:
-                file.write(response.content)
-            image_history.append(f'/images/{image_name}.png')
+        # if response.status_code == 200:
+            # local_image_path = './images/' + str(image_name) + '.png'
+            # with open(local_image_path, 'wb') as file:
+            #     file.write(response.content)
+        image_name = 'f5cba43c-1c0a-42cf-b19f-1123b0d50c7a'
+        if image_name == 'f5cba43c-1c0a-42cf-b19f-1123b0d50c7a':
+
+            # Upload the image to Cloudinary
+            print('here ----1')
+            local_full_image_path = "./images/f5cba43c-1c0a-42cf-b19f-1123b0d50c7a.png"
+            print('local_full_image_path ->', local_full_image_path)
+            cloudinary.uploader.upload(str("./images/f5cba43c-1c0a-42cf-b19f-1123b0d50c7a.png"), public_id=str("quickstart_butterfly"), unique_filename = False, overwrite=True)
+            print('here---- 2')
+
+            # Add text overlay using Cloudinary transformations
+            image_with_text_url = cloudinary.CloudinaryImage('quickstart_butterfly').build_url(
+                transformation=[
+                    {'overlay': {'font_family': 'Arial', 'font_size': 140, 'text': overlay_text_top, 'font_color': 'red', 'opacity': 20, 'flags': 'layer_apply'}, 'width': 1000, 'height': 200, 'x': 0, 'y': 0, 'crop': 'fit'},
+                    {'overlay': {'font_family': 'Arial', 'font_size': 40, 'text': overlay_text_bottom, 'font_color': 'red', 'opacity': 20, 'flags': 'layer_apply'}, 'width': 1000, 'height': 400, 'x': 0, 'y': 400, 'crop': 'fit'}
+                ]
+            )
+
+            # create a new meme object
+            new_meme = Meme(
+                owner_id=current_user.id,
+                meme_url=image_with_text_url,
+                meme_name = "Generated Meme",
+                prompt=prompt,
+                category="Generated",
+            )
+
+            # add the new meme to the database
+            db.session.add(new_meme)
+            db.session.commit()
+
+            image_history.append(image_with_text_url)
+            print(image_history)
+            return jsonify({"image_url": image_with_text_url})
         else:
-            print(response.json())
-            raise Exception(str(response.json()))
-        
-        return {"image_url": f'/images/{image_name}.png'}
+            # error_message = response.json()
+            # raise Exception(f"Stability API Error: {error_message}")
+            return jsonify({"error"}), 500
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
