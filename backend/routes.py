@@ -74,19 +74,6 @@ def generate():
                 ]
             )
 
-            # create a new meme object
-            new_meme = Meme(
-                owner_id=current_user.id,
-                meme_url=image_with_text_url,
-                meme_name = "Generated Meme",
-                prompt=prompt,
-                category="Generated",
-            )
-
-            # add the new meme to the database
-            db.session.add(new_meme)
-            db.session.commit()
-
             image_history.append(image_with_text_url)
             print(image_history)
             return jsonify({"image_url": image_with_text_url})
@@ -100,6 +87,7 @@ def generate():
     
 @main.route('/api/history', methods=['GET'])
 def get_history():
+    print('image_history ->', image_history)
     return jsonify({"history": image_history})
     
 @main.route('/images/<path:filename>')
@@ -124,23 +112,32 @@ def all_memes():
     } for meme, owner_name in memes])
 
 @main.route('/api/save_memes', methods=['POST'])
-@login_required  # Ensure the user is logged in to save a meme
 def save_memes():
     data = request.get_json()
-    new_meme = Meme(
-        owner_id=current_user.id,
-        meme_url=data['meme_url'],
-        meme_name=data['meme_name'],
-        prompt=data['prompt'],
-        category=data['category'],
-        likes=0  # Initialize likes to zero
-    )
+    email = data.get('user_email')
+    print('user email ->', email)
+    user_id = User.get_user_by_email(email + '@gmail.com')
+    print('user id -> ', user_id)
+    if user_id: 
+        new_meme = Meme(
+            owner_id=user_id,
+            meme_url=data['meme_url'],
+            meme_name=data['meme_name'],
+            prompt=data['prompt'],
+            category=data['category'],
+            likes=0  # Initialize likes to zero
+        )
+        
+        db.session.add(new_meme)
+        try:
+            db.session.commit()
+            return jsonify({"message": "Meme saved successfully!"}), 201
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({"error": str(e)}), 500
+    else:
+        return jsonify({"error": "User not found"}), 404
     
-    db.session.add(new_meme)
-    db.session.commit()
-    
-    return jsonify({"message": "Meme saved successfully!"}), 201
-
 # @auth_bp.route('/register', methods=['POST'])
 # def register():
 #     data = request.get_json()

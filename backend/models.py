@@ -15,6 +15,12 @@ class User(db.Model):
 
     def get_id(self):
         return self.id
+    @staticmethod
+    def get_user_by_email(email):
+        user = User.query.filter_by(email=email).first()
+        if user:
+            return user.id
+        return None
 
 class Meme(db.Model):
     __tablename__ = 'meme'

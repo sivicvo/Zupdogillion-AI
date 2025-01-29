@@ -14,15 +14,7 @@ import Header from "@/lib/components/layout/header";
 import Footer from "@/lib/components/layout/footer";
 import MemeModal from "@/lib/components/modal/Modal"; // Ensure this path is correct
 import "./index.css";
-
-interface Meme {
-    id: string;
-    meme_url: string;
-    meme_name: string;
-    owner_name: string;
-    prompt: string;
-    likes: number;
-}
+import { Meme } from "@/lib/types";
 
 const AllMemes: React.FC = () => {
     const [memes, setMemes] = useState<Meme[]>([]);

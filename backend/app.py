@@ -10,6 +10,7 @@ from flask_migrate import Migrate
 
 app = Flask(__name__)
 CORS(app)
+# CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
 app.config.from_object(Config)
 
 # Initialize database
