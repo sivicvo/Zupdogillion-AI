@@ -116,7 +116,7 @@ def save_memes():
     data = request.get_json()
     email = data.get('user_email')
     print('user email ->', email)
-    user_id = User.get_user_by_email(email + '@gmail.com')
+    user_id = User.get_user_by_email(email)
     print('user id -> ', user_id)
     if user_id: 
         new_meme = Meme(

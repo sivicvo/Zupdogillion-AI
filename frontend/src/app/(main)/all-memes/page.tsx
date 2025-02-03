@@ -15,6 +15,7 @@ import Footer from "@/lib/components/layout/footer";
 import MemeModal from "@/lib/components/modal/Modal"; // Ensure this path is correct
 import "./index.css";
 import { Meme } from "@/lib/types";
+import ShareOnTwitterButton from "@/lib/components/Button/ShareOnTwitterButton";
 
 const AllMemes: React.FC = () => {
     const [memes, setMemes] = useState<Meme[]>([]);
@@ -161,9 +162,10 @@ const MemeCard: React.FC<MemeCardProps> = ({ meme }) => {
                                 <Bookmark />
                             </button>
                         </div>
-                        <button className="px-3 rounded-full font-bold bg-blue-400 text-gray-800 hover:text-gray-200 flex items-center">
+                        {/* <button className="px-3 rounded-full font-bold bg-blue-400 text-gray-800 hover:text-gray-200 flex items-center">
                             Share on <X />
-                        </button>
+                        </button> */}
+                        <ShareOnTwitterButton />
                     </div>
                 </div>
             )}
