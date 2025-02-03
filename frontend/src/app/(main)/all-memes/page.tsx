@@ -14,15 +14,8 @@ import Header from "@/lib/components/layout/header";
 import Footer from "@/lib/components/layout/footer";
 import MemeModal from "@/lib/components/modal/Modal"; // Ensure this path is correct
 import "./index.css";
-
-interface Meme {
-    id: string;
-    meme_url: string;
-    meme_name: string;
-    owner_name: string;
-    prompt: string;
-    likes: number;
-}
+import { Meme } from "@/lib/types";
+import ShareOnTwitterButton from "@/lib/components/Button/ShareOnTwitterButton";
 
 const AllMemes: React.FC = () => {
     const [memes, setMemes] = useState<Meme[]>([]);
@@ -33,7 +26,7 @@ const AllMemes: React.FC = () => {
         const fetchMemes = async () => {
             setLoading(true);
             try {
-                // const res = await fetch("http://127.0.0.1:5328/api/all_memes");
+                // const res = await fetch("https://mongoose-infinite-truly.ngrok-free.app/api/all_memes");
                 const res = await fetch(
                     "https://zupdogollion-ai.onrender.com/api/all_memes"
                 );
@@ -169,9 +162,10 @@ const MemeCard: React.FC<MemeCardProps> = ({ meme }) => {
                                 <Bookmark />
                             </button>
                         </div>
-                        <button className="px-3 rounded-full font-bold bg-blue-400 text-gray-800 hover:text-gray-200 flex items-center">
+                        {/* <button className="px-3 rounded-full font-bold bg-blue-400 text-gray-800 hover:text-gray-200 flex items-center">
                             Share on <X />
-                        </button>
+                        </button> */}
+                        <ShareOnTwitterButton />
                     </div>
                 </div>
             )}

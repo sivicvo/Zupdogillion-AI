@@ -10,6 +10,7 @@ from flask_migrate import Migrate
 
 app = Flask(__name__)
 CORS(app)
+# CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
 app.config.from_object(Config)
 
 # Initialize database
@@ -33,7 +34,6 @@ app.config['MAIL_USERNAME'] = "jackpassiondev07@gmail.com"
 app.config['MAIL_PASSWORD'] = "aifgldgkfthj1"
 mail = Mail(app)
 
-
 # Register Blueprints
 app.register_blueprint(main)
 app.register_blueprint(auth_bp, url_prefix='/auth')
@@ -41,5 +41,4 @@ app.register_blueprint(auth_bp, url_prefix='/auth')
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()  # Create database tables if they don't exist
-    # app.run(port=5328, debug=True)
-    app.run(port=5328)
+    app.run(port=5328, debug=True)

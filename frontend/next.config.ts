@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
       {
         protocol: 'http',
         // hostname: 'lh3.googleusercontent.com',
-        hostname: 'localhost:5328',
+        hostname: 'https://res.cloudinary.com',
         port: '',
         pathname: '/**', 
       },
